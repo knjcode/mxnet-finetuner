@@ -1,0 +1,15 @@
+docker-compose.yml
+docker-compose.yml-e
+config.yml
+config.yml-e
+data/train/
+data/valid/
+data/test/
+images/train/
+images/valid/
+images/test/
+logs/
+model/
+classify_example/
+example_images/
+101_ObjectCategories.tar.gz

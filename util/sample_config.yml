@@ -1,0 +1,74 @@
+# mxnet-finetuner settings
+
+# common settngs
+common:
+  num_threads: 4
+  # gpus: 0  # list of gpus to run, e.g. 0 or 0,2,5.
+
+# train, validation and test RecordIO data generation settings
+data:
+  quality: 95
+  shuffle: 1
+  center_crop: 0
+  # use_japanese_label: 1
+
+# finetune settings
+finetune:
+  pretrained_models:  # the pretrained models
+    - imagenet1k-nin
+    # - imagenet1k-inception-v3
+    # - imagenet1k-vgg16
+    # - imagenet1k-resnet-50
+    # - imagenet11k-resnet-152
+    # - imagenet1k-resnext-101
+    # etc
+  optimizers:  # the optimizer types
+    - sgd
+    # optimizers: sgd, dcasgd, nag, sgld, adam, adagrad, rmsprop, adadelta, ftrl, adamax, nadam
+  num_epochs: 10  # max num of epochs
+  # load_epoch: 0  # specify when using user fine-tuned model
+  lr: 0.0001  # initial learning rate
+  lr_factor: 0.1  # the ratio to reduce lr on each step
+  lr_step_epochs: 10  # the epochs to reduce the lr, e.g. 30,60
+  mom: 0.9  # momentum for sgd
+  wd: 0.00001  # weight decay for sgd
+  batch_size: 10  # the batch size
+  disp_batches: 10  # show progress for every n batches
+  # top_k: 0  # report the top-k accuracy. 0 means no report.
+  # random_crop: 0  # if or not randomly crop the image
+  # random_mirror: 0  # if or not randomly flip horizontally
+  # max_random_h: 0  # max change of hue, whose range is [0, 180]
+  # max_random_s: 0  # max change of saturation, whose range is [0, 255]
+  # max_random_l: 0  # max change of intensity, whose range is [0, 255]
+  # max_random_aspect_ratio: 0  # max change of aspect ratio, whose range is [0, 1]
+  # max_random_rotate_angle: 0  # max angle to rotate, whose range is [0, 360]
+  # max_random_shear_ratio: 0  # max ratio to shear, whose range is [0, 1]
+  # max_random_scale: 1  # max ratio to scale
+  # min_random_scale: 1  # min ratio to scale, should >= img_size/input_shape. otherwise use --pad-size
+  # rgb_mean: '123.68,116.779,103.939'  # a tuple of size 3 for the mean rgb
+  # monitor: 0  # log network parameters every N iters if larger than 0
+  # pad_size: 0  # padding the input image
+  auto_test: 1  # if or not test with validation data after fine-tuneing is completed
+  train_accuracy_graph_output: 1
+  # train_accuracy_graph_fontsize: 12
+  # train_accuracy_graph_figsize: 8,6
+  # train_accuracy_graph_slack_upload: 1
+  # train_accuracy_graph_slack_channels:
+  #   - general
+
+# test settings
+test:
+  use_latest: 1  # Use last trained model. If set this option, model_prefix and model_epoch are ignored
+  model_prefix: 201705292200-imagenet1k-nin-sgd
+  model_epoch: 1
+  # model_epoch_up_to: 10  # test from model_epoch to model_epoch_up_to respectively
+  test_batch_size: 10
+  # top_k: 10
+  classification_report_output: 1
+  # classification_report_digits: 3
+  confusion_matrix_output: 1
+  # confusion_matrix_fontsize: 12
+  # confusion_matrix_figsize: 16,12
+  # confusion_matrix_slack_upload: 1
+  # confusion_matrix_slack_channels:
+  #   - general

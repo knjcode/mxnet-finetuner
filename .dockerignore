@@ -1,0 +1,5 @@
+*
+!Dockerfile
+!common
+!docker-entrypoint.sh
+!util

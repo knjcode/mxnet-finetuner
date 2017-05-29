@@ -1,0 +1,148 @@
+#!/usr/bin/env bash
+
+usage() {
+cat <<- EOS
+Usage: docker-compose run finetuner <command>
+Commands: (default is finetune)
+  finetune:                  Do fine-tuning
+  gen_train <image_size>:    Generate train and validation image recordIO files.
+  gen_test <image_size>:     Generate test image recordIO files.
+  test:                      test with specified model.
+  version:                   Show the mxnet-finetuner version information.
+EOS
+}
+
+version() {
+  echo 'mxnet-finetuner version 0.0.1'
+}
+
+generate_compose() {
+  local cur_dir="$1"
+  local docker_compose_file="$2"
+  mo < "$cur_dir/util/compose-template.mo" > "$cur_dir/$docker_compose_file" \
+  && echo "Generate $dockr_compose_file"
+}
+
+update_compose() {
+  local cur_dir="$1"
+  local DEVICES="$2"
+  local docker_compose_file="$3"
+  if [[ "$DEVICES" = "" ]]; then
+    sed -i -e 's/knjcode\/mxnet-finetuner/knjcode\/mxnet-finetuner:cpu/' "$cur_dir/$docker_compose_file" \
+    && echo "Set use cpu docker image (knjcode/mxnet-finetuner:cpu)"
+  else
+    echo "Set use gpu docker image (knjcode/mxnet-finetuner)"
+  fi
+}
+
+generate_config() {
+  local cur_dir="$1"
+  local config_file="$2"
+  cp "$cur_dir/util/sample_config.yml" "$cur_dir/$config_file" \
+  && echo "Generate $config_file"
+}
+
+update_config() {
+  local cur_dir="$1"
+  local DEVICES="$2"
+  local config_file="$3"
+  if [[ ! "$DEVICES" = "" ]]; then
+    sed -i -e 's/# gpus/gpus/g' "$cur_dir/$config_file" \
+    && echo "Detect GPUs. Activate common.gpus option in $config_file"
+  fi
+}
+
+get_conf() {
+  local config="$1"
+  local param="$2"
+  local default="$3"
+  local value
+  value=$(echo "$config" | jq -r "$param")
+  if [[ "$value" = 'null' ]]; then
+    value="$default"
+  fi
+  echo "$value"
+}
+
+get_conf_array() {
+  local config="$1"
+  local param="$2"
+  local default="$3"
+  local value
+  value=$(echo "$config" | jq -r "$param")
+  if [[ "$value" = 'null' ]]; then
+    value="$default"
+  else
+    value=$(echo "$config" | jq -r "$param | .[]")
+  fi
+  echo "$value"
+}
+
+get_image_size() {
+  local MODEL="$1"
+  if [[ "$MODEL" = *caffenet* ]]; then
+    IMAGE_SIZE=227
+  elif [[ "$MODEL" = *squeezenet* ]]; then
+    IMAGE_SIZE=227
+  elif [[ "$MODEL" = *inception-v3* ]]; then
+    IMAGE_SIZE=299
+  else
+    IMAGE_SIZE=224
+  fi
+  echo "$IMAGE_SIZE"
+}
+
+download_inception_v3_model() {
+  if [ ! -e inception-v3.tar.gz ]; then
+    wget http://data.dmlc.ml/models/imagenet/inception-v3.tar.gz
+  fi
+  tar xf inception-v3.tar.gz
+  mv model/Inception-7-0001.params model/imagenet1k-inception-v3-0000.params
+  mv model/Inception-7-symbol.json model/imagenet1k-inception-v3-symbol.json
+}
+
+check_inception_v3_model() {
+  if [ ! -e "/mxnet/example/image-classification/model/imagenet1k-inception-v3-0000.params" ]; then
+    download_inception_v3_model
+  fi
+}
+
+get_layer_before_fullc() {
+  local MODEL="$1"
+  if [[ $MODEL = *caffenet* ]]; then
+    LAYER_BEFORE_FULLC="flatten_0"
+  elif [[ $MODEL = *vgg* ]]; then
+    LAYER_BEFORE_FULLC="flatten_0"
+  elif [[ $MODEL = *nin* ]]; then
+    LAYER_BEFORE_FULLC="flatten"
+  elif [[ $MODEL = *squeezenet* ]]; then
+    LAYER_BEFORE_FULLC="flatten"
+  elif [[ $MODEL = *inception-v3* ]]; then
+    LAYER_BEFORE_FULLC="flatten"
+    check_inception_v3_model
+  elif [[ $MODEL = *inception* ]]; then
+    LAYER_BEFORE_FULLC="flatten"
+  elif [[ $MODEL = *resnet* ]]; then
+    LAYER_BEFORE_FULLC="flatten0"
+  elif [[ $MODEL = *resnext* ]]; then
+    LAYER_BEFORE_FULLC="flatten0"
+  else
+    LAYER_BEFORE_FULLC="flatten_0"
+  fi
+  echo "$LAYER_BEFORE_FULLC"
+}
+
+print_classification_report() {
+  local report="$1"
+  local use_japanese_label="$2"
+  local body
+
+  if [[ $use_japanese_label = 1 ]]; then
+    body=$(cat "$report" | tail -n +4 | \
+          sed -e 's/precision/a precision/' -e 's/avg \/ total/avg\/total/' | \
+          column -t | sed -e 's/^a /  /' | sed -e '2i \ ' | sed -e '$ i \ ')
+  else
+    body=$(cat "$report" | tail -n +4)
+  fi
+  echo "$body"
+}
