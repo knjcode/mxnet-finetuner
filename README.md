@@ -56,7 +56,7 @@ images/
 ```
 
 
-#### 2. Edit config.yml
+### 2. Edit config.yml
 
 Edit `config.yml` as you like.
 
@@ -69,6 +69,7 @@ common:
 data:
   quality: 95
   shuffle: 1
+  center_crop: 0
 
 finetune:
   pretrained_models:
@@ -85,7 +86,7 @@ finetune:
 ```
 
 
-#### 3. Do Fine-tuning
+### 3. Do Fine-tuning
 
 ```
 $ docker-compose run finetuner
@@ -119,7 +120,7 @@ test:
 ```
 
 
-#### 4. Predict with trained models
+### 4. Predict with trained models
 
 Select the trained model and epoch you want to use for testing and edit `config.yml`
 
@@ -184,8 +185,6 @@ Classification accuracy of available pretrained models.
 - The `model size` is the file size to be saved after fine-tuning.
 
 
-You can use these model by setting `config.yml` with the following pretrained_models name.
-
 To use these pretrained models, specify the following pretrained_models name in `config.yml`.
 
 |model                          |pretrained_models names          |
@@ -212,6 +211,7 @@ To use these pretrained models, specify the following pretrained_models name in 
 
 
 ## Benchmark
+
 
 ### Speed (images/sec)
 
