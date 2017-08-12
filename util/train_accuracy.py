@@ -155,14 +155,14 @@ if top_k > 0:
     plt.plot(val_acc_x_top_k, val_acc_y_top_k, "g", label="top-" + str(top_k) + " val-acc")
 
 plt_x = train_acc_x[0]
-plt.text(plt_x, 0.35, 'model used:    %s' % model)
-plt.text(plt_x, 0.30, 'optimizer:       %s' % optimizer)
-plt.text(plt_x, 0.25, 'learning rate:  %s' % lr)
-plt.text(plt_x, 0.20, 'result val-acc: %s (%s epoch)' % (val_acc_y[-1], len(val_acc_y)+load_epoch))
-plt.text(plt_x, 0.15, 'best val-acc:   %s (%s epoch)' % (max_acc, max_acc_index+1+load_epoch))
-plt.text(plt_x, 0.10, 'train speed:    %.2f (samples/sec) (batch size: %s)' % (np.mean(train_speed), batch_size))
+plt.text(plt_x, 0.35, '   model used:    %s' % model)
+plt.text(plt_x, 0.30, '   optimizer:       %s' % optimizer)
+plt.text(plt_x, 0.25, '   learning rate:  %s' % lr)
+plt.text(plt_x, 0.20, '   result val-acc: %s (%s epoch)' % (val_acc_y[-1], len(val_acc_y)+load_epoch))
+plt.text(plt_x, 0.15, '   best val-acc:   %s (%s epoch)' % (max_acc, max_acc_index+1+load_epoch))
+plt.text(plt_x, 0.10, '   train speed:    %.2f (samples/sec) (batch size: %s)' % (np.mean(train_speed), batch_size))
 if top_k > 0:
-    plt.text(plt_x, 0.05, 'best top-%s val-acc: %s (%s epoch)' % (top_k, max_top_k_acc, max_top_k_acc_index+1))
+    plt.text(plt_x, 0.05, '   best top-%s val-acc: %s (%s epoch)' % (top_k, max_top_k_acc, max_top_k_acc_index+1))
 
 plt.title('model accuracy\n%s' % model_prefix)
 plt.xlabel("Iterations")
