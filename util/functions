@@ -4,11 +4,14 @@ usage() {
 cat <<- EOS
 Usage: docker-compose run finetuner <command>
 Commands: (default is finetune)
-  finetune:                  Do fine-tuning
-  gen_train <image_size>:    Generate train and validation image recordIO files.
-  gen_test <image_size>:     Generate test image recordIO files.
-  test:                      test with specified model.
-  version:                   Show the mxnet-finetuner version information.
+  finetune:               Do fine-tuning
+  gen_train <image_size>: Generate train and validation image recordIO files.
+  gen_test <image_size>:  Generate test image recordIO files.
+  test:                   test with specified model.
+  jupyter:                Launch jupyter notebook. Add --service-port option
+                          when executing command.
+                          docker-commpose run --service-port finetuner jupyter
+  version:                Show the mxnet-finetuner version information.
 EOS
 }
 
