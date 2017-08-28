@@ -39,6 +39,7 @@ train_log_filename = os.path.basename(train_logs[0])
 model_prefix = os.path.splitext(train_log_filename)[0]
 
 model_regex = re.compile(r'pretrained_model=\'(\S+)\'')
+model_regex_scratch = re.compile(r'network=\'(\S+)\'')
 lr_regex = re.compile(r'lr=(\S+),')
 
 
@@ -51,7 +52,10 @@ top_k_regex = re.compile(r'top_k=(\S+),')
 
 with open(train_logs[0], 'r') as l:
     data = l.read()
-    model = re.search(model_regex, data).groups()[0]
+    try:
+        model = re.search(model_regex, data).groups()[0]
+    except AttributeError:
+        model = re.search(model_regex_scratch, data).groups()[0]
     lr = float(re.search(lr_regex, data).groups()[0])
     try:
         load_epoch = int(re.search(load_epoch_regex, data).groups()[0])

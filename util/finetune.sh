@@ -26,7 +26,10 @@ echo "GPU_OPTION=$GPU_OPTION"
 
 USE_JAPANESE_LABEL=$(get_conf "$config" ".data.use_japanese_label" "0")
 
-MODELS=$(get_conf_array "$config" ".finetune.pretrained_models" "imagenet1k-nin")
+MODELS=$(get_conf_array "$config" ".finetune.models" "")
+if [[ "$MODELS" = "" ]]; then
+  MODELS=$(get_conf_array "$config" ".finetune.pretrained_models" "imagenet1k-nin")
+fi
 echo "MODELS=$MODELS"
 OPTIMIZERS=$(get_conf_array "$config" ".finetune.optimizers" "sgd")
 echo "OPTIMIZERS=$OPTIMIZERS"
@@ -36,6 +39,12 @@ if [[ ! $NUM_EPOCHS -gt $LOAD_EPOCH ]]; then
   echo 'Error: num_epochs must be bigger than load_epoch' 1>&2
   exit 1
 fi
+if [[ ! $LOAD_EPOCH = "0" ]]; then
+  LOAD_EPOCH_OPTION="--load-epoch $LOAD_EPOCH"
+else
+  LOAD_EPOCH_OPTION=""
+fi
+echo "LOAD_EPOCH_OPTION=$LOAD_EPOCH_OPTION"
 LR=$(get_conf "$config" ".finetune.lr" "0.00001")
 LR_FACTOR=$(get_conf "$config" ".finetune.lr_factor" "0.1")
 LR_STEP_EPOCHS=$(get_conf "$config" ".finetune.lr_step_epochs" "10")
@@ -68,10 +77,31 @@ TEST_SLACK_CHANNELS=$(get_conf_array "$config" ".test.confusion_matrix_slack_cha
 CLASSIFICATION_REPORT_OUTPUT=$(get_conf "$config" ".test.classification_report_output" "1")
 
 for MODEL in $MODELS; do
-  # Determine LAYER_BEFORE_FULLC and IMAGE_SIZE
-  LAYER_BEFORE_FULLC=$(get_layer_before_fullc "$MODEL")
+  # Determine IMAGE_SIZE
   IMAGE_SIZE=$(get_image_size "$MODEL")
   IMAGE_SHAPE="3,$IMAGE_SIZE,$IMAGE_SIZE"
+
+  # Construct train commnd
+  if [[ $(check_from_scratch "$MODEL") -eq 0 ]]; then
+    # from scratch
+    echo "Training from scratch $MODEL"
+    MODEL=$(trim_scratch "$MODEL")
+    NUM_LAYERS=$(get_num_layers "$MODEL")
+    if [[ "$NUM_LAYERS" = 'null' ]]; then
+      # do not have num-layers
+      TRAIN_COMMAND="python util/train_imagenet.py --network $MODEL"
+    else
+      # num-layers
+      TRIMED_MODEL=$(trim_num_layers "$MODEL")
+      TRAIN_COMMAND="python util/train_imagenet.py --network $TRIMED_MODEL --num-layers $NUM_LAYERS"
+    fi
+  else
+    # fine-tuning
+    # Determine LAYER_BEFORE_FULLC and IMAGE_SIZE
+    LAYER_BEFORE_FULLC=$(get_layer_before_fullc "$MODEL")
+    TRAIN_COMMAND="python util/fine-tune.py --pretrained-model $MODEL --layer-before-fullc $LAYER_BEFORE_FULLC"
+  fi
+  echo "TRAIN_COMMAND=$TRAIN_COMMAND"
 
   # If necessary image records do not exist, they are generated.
   if [ "$DATA_TRAIN/images-train-$IMAGE_SIZE.rec" -ot "$TRAIN" ]; then
@@ -105,14 +135,12 @@ for MODEL in $MODELS; do
     LABELS="model/$MODEL_PREFIX-labels.txt"
     cp "$DATA_TRAIN/labels.txt" "$LABELS"
 
-    python util/fine-tune.py \
-    --pretrained-model "$MODEL" \
-    --layer-before-fullc "$LAYER_BEFORE_FULLC" \
+    $TRAIN_COMMAND \
     --data-train "$DATA_TRAIN/images-train-${IMAGE_SIZE}.rec" \
     --data-val "$DATA_VALID/images-valid-${IMAGE_SIZE}.rec" \
     $GPU_OPTION \
     --num-epochs "$NUM_EPOCHS" \
-    --load-epoch "$LOAD_EPOCH" \
+    $LOAD_EPOCH_OPTION \
     --lr "$LR" \
     --lr-factor "$LR_FACTOR" \
     --lr-step-epochs "$LR_STEP_EPOCHS" \
@@ -184,7 +212,7 @@ for MODEL in $MODELS; do
         fi
       fi
     else
-      echo "Error: Failed to fine-tune: $MODEL_PREFIX" 1>&2
+      echo "Error(Exit code ${PIPESTATUS[0]}): Failed to fine-tune: $MODEL_PREFIX" 1>&2
     fi
 
   done

@@ -14,7 +14,7 @@ data:
 
 # finetune settings
 finetune:
-  pretrained_models:  # the pretrained models
+  models:  # specify models to use
     - imagenet1k-nin
     # - imagenet1k-inception-v3
     # - imagenet1k-vgg16
@@ -22,7 +22,7 @@ finetune:
     # - imagenet11k-resnet-152
     # - imagenet1k-resnext-101
     # etc
-  optimizers:  # the optimizer types
+  optimizers:  # specify optimizers to use
     - sgd
     # optimizers: sgd, dcasgd, nag, sgld, adam, adagrad, rmsprop, adadelta, ftrl, adamax, nadam
   num_epochs: 10  # max num of epochs

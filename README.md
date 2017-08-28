@@ -72,7 +72,7 @@ data:
   center_crop: 0
 
 finetune:
-  pretrained_models:
+  models:
     - imagenet1k-resnet-50
   optimizers:
     - sgd
@@ -185,9 +185,9 @@ Classification accuracy of available pretrained models.
 - The `model size` is the file size to be saved after fine-tuning.
 
 
-To use these pretrained models, specify the following pretrained_models name in `config.yml`.
+To use these pretrained models, specify the following pretrained model name in `config.yml`.
 
-|model                          |pretrained_models names          |
+|model                          |pretrained model name            |
 |:------------------------------|:--------------------------------|
 |CaffeNet                       |imagenet1k-caffenet              |
 |SqueezeNet                     |imagenet1k-squeezenet            |
@@ -359,6 +359,46 @@ $ docker-compose run finetuner
 
 ## Misc
 
+### Training from scratch
+
+Edit `config.yml` as below.
+
+```
+finetune:
+  models:
+    - scratch-alexnet
+```
+
+You can also run fine-tuning and training from scratch together.
+
+```
+finetune:
+  models:
+    - imagenet1k-inception-v3
+    - scratch-inception-v3
+```
+
+
+#### Available models traininig from scratch
+
+|from scratch model name        |
+|:------------------------------|
+|scratch-alexnet                |
+|scratch-googlenet              |
+|scratch-inception-bn           |
+|scratch-inception-resnet-v2    |
+|scratch-inception-v3           |
+|scratch-inception-v4           |
+|scratch-lenet                  |
+|scratch-mlp                    |
+|scratch-mobilenet              |
+|scratch-resnet-N               |
+|scratch-resnext-N              |
+|scratch-vgg                    |
+
+Specify the number of layers for N in scratch-resnet and scratch-resnext.
+(N can be set to 18, 34, 50, 101, 152, 200 and 269)
+
 ### Use DenseNet
 
 ImageNet pretrained DenseNet-169 model is introduced on [A MXNet implementation of DenseNet with BC structure].
@@ -430,7 +470,7 @@ data:
 
 ```
 finetune:
-  pretrained_models:  # the pretrained models
+  models:  # specify models to use
     - imagenet1k-nin
     # - imagenet1k-inception-v3
     # - imagenet1k-vgg16
@@ -438,7 +478,7 @@ finetune:
     # - imagenet11k-resnet-152
     # - imagenet1k-resnext-101
     # etc
-  optimizers:  # the optimizer types
+  optimizers:  # specify optimizers to use
     - sgd
     # optimizers: sgd, dcasgd, nag, sgld, adam, adagrad, rmsprop, adadelta, ftrl, adamax, nadam
   num_epochs: 10  # max num of epochs
