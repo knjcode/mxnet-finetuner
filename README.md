@@ -359,6 +359,46 @@ $ docker-compose run finetuner
 
 ## Misc
 
+### Training from scratch
+
+Edit `config.yml` as below.
+
+```
+finetune:
+  models:
+    - scratch-alexnet
+```
+
+You can also run fine-tuning and training from scratch together.
+
+```
+finetune:
+  models:
+    - imagenet1k-inception-v3
+    - scratch-inception-v3
+```
+
+
+#### Available models traininig from scratch
+
+|from scratch model name        |
+|:------------------------------|
+|scratch-alexnet                |
+|scratch-googlenet              |
+|scratch-inception-bn           |
+|scratch-inception-resnet-v2    |
+|scratch-inception-v3           |
+|scratch-inception-v4           |
+|scratch-lenet                  |
+|scratch-mlp                    |
+|scratch-mobilenet              |
+|scratch-resnet-N               |
+|scratch-resnext-N              |
+|scratch-vgg                    |
+
+Specify the number of layers for N in scratch-resnet and scratch-resnext.
+(N can be set to 18, 34, 50, 101, 152, 200 and 269)
+
 ### Use DenseNet
 
 ImageNet pretrained DenseNet-169 model is introduced on [A MXNet implementation of DenseNet with BC structure].

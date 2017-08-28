@@ -65,6 +65,7 @@ WORKDIR /mxnet/example/image-classification
 
 COPY common /mxnet/example/image-classification/common/
 COPY util /mxnet/example/image-classification/util/
+COPY util/inception-resnet-v2.py /mxnet/example/image-classification/symbols/
 COPY docker-entrypoint.sh .
 
 ENTRYPOINT ["./docker-entrypoint.sh"]

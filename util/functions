@@ -55,6 +55,68 @@ update_config() {
   fi
 }
 
+check_from_scratch() {
+  local model="$1"
+  if [[ "$model" = scratch-* ]]; then
+    echo 0
+  else
+    echo 1
+  fi
+}
+
+trim_scratch() {
+  local model="$1"
+  if [[ $(check_from_scratch "$model") -eq 0 ]]; then
+    echo "$model" | sed -e 's/^scratch-//'
+  else
+    echo "$momdel"
+  fi
+}
+
+check_has_num_layers() {
+  local model="$1"
+  if [[ "$model" = *resnet-v1-* ]]; then
+    echo 0
+  elif [[ "$model" = *resnet-* ]]; then
+    echo 0
+  elif [[ "$model" = *resnext-* ]]; then
+    echo 0
+  else
+    echo 1
+  fi
+}
+
+check_num_layers() {
+  # Specify the number of layers for N in scratch-resnet-v1, scratch-resnet and scratch-resnext.
+  # N can be set to 18, 34, 50, 101, 152, 200 and 269.
+  local model="$1"
+  if [[ $(check_has_num_layers "$model") -eq 0 ]]; then
+    # num-layers
+    if [[ "$model" =~ 18|34|50|101|152|200|269 ]]; then
+      echo 0
+    else
+      echo 1
+    fi
+  else
+    # do not have num-layers
+    echo 1
+  fi
+}
+
+get_num_layers() {
+  local model="$1"
+  if [[ $(check_num_layers "$model") -eq 0 ]]; then
+    echo "$model" | awk -F - '{ print $NF }'
+  else
+    echo 'null'
+  fi
+}
+
+trim_num_layers() {
+  local model="$1"
+  echo "$model" | sed -e 's/-[0-9]*$//'
+}
+
 get_conf() {
   local config="$1"
   local param="$2"
@@ -87,7 +149,15 @@ get_image_size() {
     IMAGE_SIZE=227
   elif [[ "$MODEL" = *squeezenet* ]]; then
     IMAGE_SIZE=227
+  elif [[ "$MODEL" = *alexnet* ]]; then
+    IMAGE_SIZE=227
+  elif [[ "$MODEL" = *googlenet* ]]; then
+    IMAGE_SIZE=299
   elif [[ "$MODEL" = *inception-v3* ]]; then
+    IMAGE_SIZE=299
+  elif [[ "$MODEL" = *inception-v4* ]]; then
+    IMAGE_SIZE=299
+  elif [[ "$MODEL" = *inception-resnet-v2* ]]; then
     IMAGE_SIZE=299
   else
     IMAGE_SIZE=224
