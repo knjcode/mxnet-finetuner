@@ -26,7 +26,10 @@ echo "GPU_OPTION=$GPU_OPTION"
 
 USE_JAPANESE_LABEL=$(get_conf "$config" ".data.use_japanese_label" "0")
 
-MODELS=$(get_conf_array "$config" ".finetune.pretrained_models" "imagenet1k-nin")
+MODELS=$(get_conf_array "$config" ".finetune.models" "")
+if [[ "$MODELS" = "" ]]; then
+  MODELS=$(get_conf_array "$config" ".finetune.pretrained_models" "imagenet1k-nin")
+fi
 echo "MODELS=$MODELS"
 OPTIMIZERS=$(get_conf_array "$config" ".finetune.optimizers" "sgd")
 echo "OPTIMIZERS=$OPTIMIZERS"
