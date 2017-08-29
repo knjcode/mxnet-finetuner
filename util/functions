@@ -199,6 +199,8 @@ get_layer_before_fullc() {
     LAYER_BEFORE_FULLC="flatten0"
   elif [[ $MODEL = *resnext* ]]; then
     LAYER_BEFORE_FULLC="flatten0"
+  elif [[ $MODEL = *densenet* ]]; then
+    LAYER_BEFORE_FULLC="flatten0"
   else
     LAYER_BEFORE_FULLC="flatten_0"
   fi
