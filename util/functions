@@ -81,12 +81,14 @@ check_has_num_layers() {
     echo 0
   elif [[ "$model" = *resnext-* ]]; then
     echo 0
+  elif [[ "$model" = *vgg-* ]]; then
+    echo 0
   else
     echo 1
   fi
 }
 
-check_num_layers() {
+check_resnet_num_layers() {
   # Specify the number of layers for N in scratch-resnet-v1, scratch-resnet and scratch-resnext.
   # N can be set to 18, 34, 50, 101, 152, 200 and 269.
   local model="$1"
@@ -103,10 +105,52 @@ check_num_layers() {
   fi
 }
 
+check_vgg_num_layers() {
+  # Specify the number of layers for N in scratch-vgg.
+  # N can be set to 11, 13, 16 and 19.
+  local model="$1"
+  if [[ $(check_has_num_layers "$model") -eq 0 ]]; then
+    # num-layers
+    if [[ "$model" =~ 11|13|16|19 ]]; then
+      echo 0
+    else
+      echo 1
+    fi
+  else
+    # do not have num-layers
+    echo 1
+  fi
+}
+
+get_resnet_num_layers() {
+  local model="$1"
+  if [[ $(check_resnet_num_layers "$model") -eq 0 ]]; then
+    echo "$model" | awk -F - '{ print $NF }'
+  else
+    echo 'null'
+  fi
+}
+
+get_vgg_num_layers() {
+  local model="$1"
+  if [[ $(check_vgg_num_layers "$model") -eq 0 ]]; then
+    echo "$model" | awk -F - '{ print $NF }'
+  else
+    echo 'null'
+  fi
+}
+
 get_num_layers() {
   local model="$1"
-  if [[ $(check_num_layers "$model") -eq 0 ]]; then
-    echo "$model" | awk -F - '{ print $NF }'
+
+  if [[ "$model" = *vgg-* ]]; then
+    get_vgg_num_layers "$model"
+  elif [[ "$model" = *resnet-v1-* ]]; then
+    get_resnet_num_layers "$model"
+  elif [[ "$model" = *resnet-* ]]; then
+    get_resnet_num_layers "$model"
+  elif [[ "$model" = *resnext-* ]]; then
+    get_resnet_num_layers "$model"
   else
     echo 'null'
   fi
