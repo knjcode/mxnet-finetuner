@@ -394,10 +394,12 @@ finetune:
 |scratch-mobilenet              |
 |scratch-resnet-N               |
 |scratch-resnext-N              |
-|scratch-vgg                    |
+|scratch-vgg-N                  |
 
-Specify the number of layers for N in scratch-resnet and scratch-resnext.
-(N can be set to 18, 34, 50, 101, 152, 200 and 269)
+Specify the number of layers for N in scratch-resnet, scratch-resnext and scratch-vgg.
+
+For scratch-resnet and scrach-resnext, N can be set to 18, 34, 50, 101, 152, 200 and 269,
+and for scratch-vgg, N can be set to 11, 13, 16 and 19.
 
 ### Use DenseNet
 
