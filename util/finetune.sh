@@ -53,6 +53,7 @@ WD=$(get_conf "$config" ".finetune.wd" "0.00001")
 BATCH_SIZE=$(get_conf "$config" ".finetune.batch_size" "16")
 DISP_BATCHES=$(get_conf "$config" ".finetune.disp_batches" "20")
 TOP_K=$(get_conf "$config" ".finetune.top_k" "0")
+DATA_AUG_LEVEL=$(get_conf "$config" ".finetune.data_aug_level" "0")
 RANDOM_CROP=$(get_conf "$config" ".finetune.random_crop" "0")
 RANDOM_MIRROR=$(get_conf "$config" ".finetune.random_mirror" "0")
 MAX_RANDOM_H=$(get_conf "$config" ".finetune.max_random_h" "0")
@@ -75,6 +76,23 @@ CONFUSION_MATRIX_OUTPUT=$(get_conf "$config" ".test.confusion_matrix_output" "1"
 TEST_SLACK_UPLOAD=$(get_conf "$config" ".test.confusion_matrix_slack_upload" "0")
 TEST_SLACK_CHANNELS=$(get_conf_array "$config" ".test.confusion_matrix_slack_channels" "general")
 CLASSIFICATION_REPORT_OUTPUT=$(get_conf "$config" ".test.classification_report_output" "1")
+
+# data_aug_level
+echo "DATA_AUG_LEVEL=$DATA_AUG_LEVEL"
+if [[ $DATA_AUG_LEVEL -ge 1 ]]; then
+  RANDOM_CROP="1"
+  RANDOM_MIRROR="1"
+fi
+if [[ $DATA_AUG_LEVEL -ge 2 ]]; then
+  MAX_RANDOM_H="36"
+  MAX_RANDOM_S="50"
+  MAX_RANDOM_L="50"
+fi
+if [[ $DATA_AUG_LEVEL -ge 3 ]]; then
+  MAX_RANDOM_ASPECT_RATIO="0.25"
+  MAX_RANDOM_ROTATE_ANGLE="10"
+  MAX_RANDOM_SHEAR_RATIO="0.1"
+fi
 
 for MODEL in $MODELS; do
   # Determine IMAGE_SIZE

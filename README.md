@@ -493,6 +493,7 @@ finetune:
   batch_size: 10  # the batch size
   disp_batches: 10  # show progress for every n batches
   # top_k: 0  # report the top-k accuracy. 0 means no report.
+  # data_aug_level: 3  # preset data augumentation level
   # random_crop: 0  # if or not randomly crop the image
   # random_mirror: 0  # if or not randomly flip horizontally
   # max_random_h: 0  # max change of hue, whose range is [0, 180]
@@ -514,6 +515,19 @@ finetune:
   # train_accuracy_graph_slack_channels:
   #   - general
 ```
+
+#### data_aug_level
+
+By setting the `data_aug_level` parameter, you can set the data augumentation settings collectively.
+
+|Level  |settings                          |
+|:------|:---------------------------------|
+|Level 1|random_crop: 1<br>random_mirror: 1|
+|Level 2|max_random_h: 36<br>max_random_s: 50<br>max_random_l: 50<br>+ Level 1|
+|Level 3|max_random_aspect_ratio: 0.25<br>max_random_rotate_angle: 10<br>max_random_shear_ratio: 0.1<br>+ Level 2|
+
+If `data_aug_level` is set, parameters related to data augumentation will be overwritten.
+
 
 ### test settings
 

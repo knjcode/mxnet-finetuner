@@ -35,6 +35,7 @@ finetune:
   batch_size: 10  # the batch size
   disp_batches: 10  # show progress for every n batches
   # top_k: 0  # report the top-k accuracy. 0 means no report.
+  # data_aug_level: 3  # preset data augumentation level
   # random_crop: 0  # if or not randomly crop the image
   # random_mirror: 0  # if or not randomly flip horizontally
   # max_random_h: 0  # max change of hue, whose range is [0, 180]
