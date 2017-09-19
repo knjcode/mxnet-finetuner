@@ -16,7 +16,7 @@ EOS
 }
 
 version() {
-  echo 'mxnet-finetuner version 0.0.2'
+  echo 'mxnet-finetuner version 0.0.3'
 }
 
 generate_compose() {
