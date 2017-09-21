@@ -41,14 +41,14 @@ else
   fi
 fi
 
-# Determine IMAGE_SIZE
-IMAGE_SIZE=$(get_image_size "$MODEL")
+# Determine MODEL_IMAGE_SIZE
+MODEL_IMAGE_SIZE=$(get_image_size "$MODEL")
 
 # If necessary image records do not exist, they are generated.
-if [ "$DATA_TEST/images-test-$IMAGE_SIZE.rec" -ot "$TEST" ]; then
-  echo "$DATA_TEST/images-test-$IMAGE_SIZE.rec does not exist or is outdated." 1>&2
+if [ "$DATA_TEST/images-test-$MODEL_IMAGE_SIZE.rec" -ot "$TEST" ]; then
+  echo "$DATA_TEST/images-test-$MODEL_IMAGE_SIZE.rec does not exist or is outdated." 1>&2
   echo "Generate image records for test." 1>&2
-  util/gen_test.sh "$CONFIG_FILE" "$IMAGE_SIZE"
+  util/gen_test.sh "$CONFIG_FILE" "$MODEL_IMAGE_SIZE"
 fi
 
 # TARGET EPOCHS
@@ -60,7 +60,7 @@ fi
 
 for CUR_EPOCH in $EPOCHS; do
   # Predict with specified model.
-  python3 util/predict.py "$CONFIG_FILE" "$IMAGE_SIZE" "test" "$MODEL" "$CUR_EPOCH"
+  python3 util/predict.py "$CONFIG_FILE" "$MODEL_IMAGE_SIZE" "test" "$MODEL" "$CUR_EPOCH"
 
   LABELS="model/$MODEL-labels.txt"
   LABELS_TEST="$DATA_TEST/labels.txt"

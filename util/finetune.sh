@@ -96,8 +96,18 @@ fi
 
 for MODEL in $MODELS; do
   # Determine IMAGE_SIZE
-  IMAGE_SIZE=$(get_image_size "$MODEL")
-  IMAGE_SHAPE="3,$IMAGE_SIZE,$IMAGE_SIZE"
+  IMAGE_SIZE=$(get_conf "$config" ".data.resize_short" "0")
+  MODEL_IMAGE_SIZE=$(get_image_size "$MODEL")
+  if [[ $IMAGE_SIZE -eq 0 ]]; then
+    IMAGE_SIZE=$MODEL_IMAGE_SIZE
+  fi
+  if [[ $IMAGE_SIZE -lt $MODEL_IMAGE_SIZE ]]; then
+    echo 'Error: The shorter edge after resizing must be grater than or equal to the input size of the model.' 1>&2
+    echo 'Check data.resize_short at config.yml.' 1>&2
+    echo "When using $MODEL model, data.resize_short must be $MODEL_IMAGE_SIZE or more."
+    exit 1
+  fi
+  IMAGE_SHAPE="3,$MODEL_IMAGE_SIZE,$MODEL_IMAGE_SIZE"
 
   # Construct train commnd
   if [[ $(check_from_scratch "$MODEL") -eq 0 ]]; then
@@ -128,10 +138,16 @@ for MODEL in $MODELS; do
     $CUR_DIR/gen_train.sh "$CONFIG_FILE" "$IMAGE_SIZE" || exit 1
   fi
   if [ "$DATA_VALID/images-valid-$IMAGE_SIZE.rec" -ot "$VALID" ]; then
-    echo "$DATA_VALID/images-train-$IMAGE_SIZE.rec does not exist or is outdated." 1>&2
+    echo "$DATA_VALID/images-valid-$IMAGE_SIZE.rec does not exist or is outdated." 1>&2
     echo 'Generate validation image records for fine-tuning.' 1>&2
     $CUR_DIR/gen_train.sh "$CONFIG_FILE" "$IMAGE_SIZE" || exit 1
   fi
+  if [ "$DATA_VALID/images-valid-$MODEL_IMAGE_SIZE.rec" -ot "$VALID" ]; then
+    echo "$DATA_VALID/images-valid-$MODEL_IMAGE_SIZE.rec does not exist or is outdated." 1>&2
+    echo 'Generate validation image records for fine-tuning.' 1>&2
+    $CUR_DIR/gen_train.sh "$CONFIG_FILE" "$MODEL_IMAGE_SIZE" || exit 1
+  fi
+
 
   LABELS_TRAIN="$DATA_TRAIN/labels.txt"
   LABELS_VALID="$DATA_VALID/labels.txt"
@@ -205,7 +221,7 @@ for MODEL in $MODELS; do
         echo 'Start auto test using fine-tuned model with validation data'
         LABELS="model/$MODEL_PREFIX-labels.txt"
 
-        python3 util/predict.py "$CONFIG_FILE" "$IMAGE_SIZE" "valid" "$MODEL_PREFIX" "$MODEL_EPOCH"
+        python3 util/predict.py "$CONFIG_FILE" "$MODEL_IMAGE_SIZE" "valid" "$MODEL_PREFIX" "$MODEL_EPOCH"
 
         # Make a confusion matrix from prediction results.
         if [[ $CONFUSION_MATRIX_OUTPUT = 1 ]]; then

@@ -458,13 +458,18 @@ common:
 
 train, validation and test RecordIO data generation settings.
 
-mxnet-finetuner pack the image files into a recordIO file for increased performance.
+mxnet-finetuner resize and pack the image files into a recordIO file for increased performance.
+
+By setting the `resize_short`, you can resize shorter edge of images to that size.
+
+If `resize_short` is not specified, it is automatically determined according to the model you are using.
 
 ```
 data:
   quality: 95
   shuffle: 1
   center_crop: 0
+  # resize_short: 256
   # use_japanese_label: 1
 ```
 

@@ -10,6 +10,7 @@ data:
   quality: 95
   shuffle: 1
   center_crop: 0
+  # resize_short: 256
   # use_japanese_label: 1
 
 # finetune settings
