@@ -152,120 +152,20 @@ Predict result and classification report and/or confusion matrix are save at `lo
 
 ## Available pretrained models
 
-Classification accuracy of available pretrained models.
-(Datasets are ImageNet1K, ImageNet11K and Place365 Challenge)
-
-*Please note that the following results are calculated with different datasets.*
-- ResNet accuracy from [Reproduce ResNet-v2 using MXNet]
-- Other accuracy from [MXNet model gallery] and [MXNet - Image Classification - Pre-trained Models]
-
-|model                          |Top-1 Accuracy|Top-5 Accuracy|download size|model size (MXNet)|dataset    |image shape|
-|:------------------------------|-------------:|-------------:|------------:|-----------------:|----------:|----------:|
-|CaffeNet                       |54.5%         |78.3%         |233MB        |9.3MB             |ImageNet1K |227x227    |
-|SqueezeNet                     |55.4%         |78.8%         |4.8MB        |4.8MB             |ImageNet1K |227x227    |
-|NIN                            |58.8%         |81.3%         |30MB         |30MB              |ImageNet1K |224x224    |
-|ResNet-18                      |69.5%         |89.1%         |45MB         |43MB              |ImageNet1K |224x224    |
-|VGG16                          |71.0%         |89.8%         |528MB        |58MB              |ImageNet1K |224x224    |
-|VGG19                          |71.0%         |89.8%         |549MB        |78MB              |ImageNet1K |224x224    |
-|Inception-BN                   |72.5%         |90.8%         |44MB         |40MB              |ImageNet1K |224x224    |
-|ResNet-34                      |72.8%         |91.1%         |84MB         |82MB              |ImageNet1K |224x224    |
-|ResNet-50                      |75.6%         |92.8%         |98MB         |90MB              |ImageNet1K |224x224    |
-|ResNet-101                     |77.3%         |93.4%         |171MB        |163MB             |ImageNet1K |224x224    |
-|ResNet-152                     |77.8%         |93.6%         |231MB        |223MB             |ImageNet1K |224x224    |
-|ResNet-200                     |77.9%         |93.8          |248MB        |240MB             |ImageNet1K |224x224    |
-|Inception-v3                   |76.9%         |93.3%         |92MB         |84MB              |ImageNet1K |299x299    |
-|ResNeXt-50                     |76.9%         |93.3%         |96MB         |89MB              |ImageNet1K |224x224    |
-|ResNeXt-101                    |78.3%         |94.1%         |170MB        |162MB             |ImageNet1K |224x224    |
-|ResNeXt-101-64x4d              |79.1%         |94.3%         |320MB        |312MB             |ImageNet1K |224x224    |
-|ResNet-152 (imagenet11k)       |41.6%         |-             |311MB        |223MB             |ImageNet11K|224x224    |
-|ResNet-50 (Place365 Challenge) |31.1%         |-             |181MB        |90MB              |Place365ch |224x224    |
-|ResNet-152 (Place365 Challenge)|33.6%         |-             |313MB        |223MB             |Place365ch |224x224    |
-
-- The `download size` is the file size when first downloading pretrained model.
-- The `model size` is the file size to be saved after fine-tuning.
-
-
-To use these pretrained models, specify the following pretrained model name in `config.yml`.
-
 |model                          |pretrained model name            |
 |:------------------------------|:--------------------------------|
 |CaffeNet                       |imagenet1k-caffenet              |
 |SqueezeNet                     |imagenet1k-squeezenet            |
 |NIN                            |imagenet1k-nin                   |
 |VGG16                          |imagenet1k-vgg16                 |
-|VGG19                          |imagenet1k-vgg19                 |
 |Inception-BN                   |imagenet1k-inception-bn          |
-|ResNet-18                      |imagenet1k-resnet-18             |
-|ResNet-34                      |imagenet1k-resnet-34             |
 |ResNet-50                      |imagenet1k-resnet-50             |
-|ResNet-101                     |imagenet1k-resnet-101            |
 |ResNet-152                     |imagenet1k-resnet-152            |
-|ResNet-152 (imagenet11k)       |imagenet11k-resnet-152           |
-|ResNet-200                     |imagenet1k-resnet-200            |
 |Inception-v3                   |imagenet1k-inception-v3          |
-|ResNeXt-50                     |imagenet1k-resnext-50            |
-|ResNeXt-101                    |imagenet1k-resnext-101           |
-|ResNeXt-101-64x4d              |imagenet1k-resnext-101-64x4d     |
-|ResNet-50 (Place365 Challenge) |imagenet11k-place365ch-resnet-50 |
-|ResNet-152 (Place365 Challenge)|imagenet11k-place365ch-resnet-152|
 
+To use these pretrained models, specify the following pretrained model name in `config.yml`.
 
-## Benchmark
-
-
-### Speed (images/sec)
-
-- dataset: 8000 samles
-- batch size: 10, 20, 30, 40
-- Optimizer: SGD
-- GPU: Maxwell TITAN X (12GiB Memory)
-
-|model                          |batch size 10|batch size 20|batch size 30|batch size 40|
-|:------------------------------|------------:|------------:|------------:|------------:|
-|CaffeNet                       |755.64       |1054.47      |1019.24      |1077.63      |
-|SqueezeNet                     |458.27       |579.37       |534.68       |549.55       |
-|NIN                            |443.88       |516.21       |612.83       |656.14       |
-|ResNet-18                      |257.40       |308.30       |331.57       |339.09       |
-|ResNet-34                      |149.88       |182.69       |201.75       |207.49       |
-|Inception-BN                   |147.60       |183.82       |193.74       |203.86       |
-|ResNet-50                      |88.55        |102.44       |109.98       |111.04       |
-|Inception-v3                   |67.11        |75.90        |80.67        |82.34        |
-|VGG16                          |56.38        |58.01        |59.80        |59.35        |
-|ResNet-101                     |53.42        |63.28        |68.14        |68.35        |
-|VGG19                          |45.02        |46.88        |48.62        |48.28        |
-|ResNet-152                     |37.88        |44.89        |48.48        |48.62        |
-|ResNet-200                     |22.58        |25.61        |27.17        |27.32        |
-|ResNeXt-50                     |53.30        |64.40        |71.07        |72.96        |
-|ResNeXt-101                    |31.76        |39.56        |42.90        |43.99        |
-|ResNeXt-101-64x4d              |18.22        |23.08        |out of memory|out of memory|
-
-
-### Memory usage (MiB)
-
-- dataset: 8000 samples
-- batch size: 10, 20, 30, 40
-- Optimizer: SGD
-- GPU: Maxwell TITAN X (12GiB GPU Memory)
-
-|model            |batch size 10|batch size 20|batch size 30|batch size 40|Reference accuracy<br>(imagenet1k Top-5)|
-|:----------------|------------:|------------:|------------:|------------:|---------------------------------------:|
-|CaffeNet         |430          |496          |631          |716          |78.3%         |
-|SqueezeNet       |608          |937          |1331         |1672         |78.8%         |
-|NIN              |650          |902          |1062         |1222         |81.3%         |
-|ResNet-18        |814          |1163         |1497         |1853         |88.7%         |
-|ResNet-34        |1127         |1619         |2094         |2598         |91.0%         |
-|Inception-BN     |1007         |1569         |2212         |2772         |90.8%         |
-|ResNet-50        |1875         |3080         |4265         |5483         |92.6%         |
-|Inception-v3     |2075         |3509         |4944         |6383         |93.3%         |
-|VGG16            |1738         |2960         |4751         |5977         |89.8%         |
-|ResNet-101       |2791         |4576         |6341         |8158         |93.3%         |
-|VGG19            |1920         |3242         |5133         |6458         |89.8%         |
-|ResNet-152       |3790         |6296         |8777         |11330        |93.1%         |
-|ResNet-200       |2051         |2769         |3471         |4201         |unknown       |
-|ResNeXt-50       |2248         |3863         |5468         |7089         |93.3%         |
-|ResNeXt-101      |3350         |5749         |8126         |10539        |94.1%         |
-|ResNeXt-101-64x4d|5140         |8679         |out of memory|out of memory|94.3%         |
-
+For detailes, please check [Available pretrained models](docs/pretrained_models.md)
 
 
 ## Available optimizers
@@ -284,6 +184,19 @@ To use these pretrained models, specify the following pretrained model name in `
 
 To use these optimizers, specify the optimizer name in lowercase in `config.yml`.
 
+
+## Benchmark (Speed and Memory Footprint)
+
+Single TITAN X (Maxwell) with batch size 40
+
+|Model       |speed (images/sec)|memory (MiB)|
+|:-----------|:-----------------|:-----------|
+|CaffeNet    |1077.63           |716         |
+|ResNet-50   |111.04            |5483        |
+|Inception-V3|82.34             |6383        |
+|ResNet-152  |48.28             |11330       |
+
+For details, please check [Benchmark](docs/benchmark.md)
 
 
 ## Utilities
@@ -378,57 +291,16 @@ finetune:
     - scratch-inception-v3
 ```
 
+For detailes, please check [Available models training from scratch](docs/train_from_scratch.md)
 
-#### Available models traininig from scratch
-
-|from scratch model name        |
-|:------------------------------|
-|scratch-alexnet                |
-|scratch-googlenet              |
-|scratch-inception-bn           |
-|scratch-inception-resnet-v2    |
-|scratch-inception-v3           |
-|scratch-inception-v4           |
-|scratch-lenet                  |
-|scratch-mlp                    |
-|scratch-mobilenet              |
-|scratch-resnet-N               |
-|scratch-resnext-N              |
-|scratch-vgg-N                  |
-
-Specify the number of layers for N in scratch-resnet, scratch-resnext and scratch-vgg.
-
-For scratch-resnet and scrach-resnext, N can be set to 18, 34, 50, 101, 152, 200 and 269,
-and for scratch-vgg, N can be set to 11, 13, 16 and 19.
 
 ### Use DenseNet
 
 ImageNet pretrained DenseNet-169 model is introduced on [A MXNet implementation of DenseNet with BC structure].
 
-You can use this model as below
+You can use this model.
 
-#### Download parameter and symbol files
-
-densenet-imagenet-169-0-0125.params
-https://drive.google.com/open?id=0B_M7XF_l0CzXX3V3WXJoUnNKZFE
-
-densenet-imagenet-169-0-symbol.json
-https://raw.githubusercontent.com/bruinxiong/densenet.mxnet/master/densenet-imagenet-169-0-symbol.json
-
-#### Rearrange downloaded files
-
-Change the name of the downloaded files and store it as below
-
-```
-model/imagenet1k-densenet-169-0000.params
-model/imagenet1k-densenet-169-symbol.json
-```
-
-#### Modify config
-
-To use DenseNet-169 pretrained models, specify the `imagenet1k-densenet-169` in `config.yml`.
-
-
+For detailes, please check [Use DenseNet](docs/use_densenet.md)
 
 
 ## Try image classification with jupyter notebook
