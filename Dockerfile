@@ -1,4 +1,4 @@
-FROM nvidia/cuda:8.0-cudnn6-devel
+FROM nvidia/cuda:9.0-cudnn7-devel
 
 RUN apt-get update \
   && apt-get upgrade -y \
@@ -25,7 +25,8 @@ RUN apt-get update \
 RUN cd /usr/src/gtest && cmake CMakeLists.txt && make && cp *.a /usr/lib && \
     cd /tmp && wget https://bootstrap.pypa.io/get-pip.py && python3 get-pip.py && python2 get-pip.py
 
-RUN git clone --recursive https://github.com/dmlc/mxnet && cd mxnet \
+RUN git clone --recursive https://github.com/apache/incubator-mxnet.git mxnet --branch 0.12.0 \
+  && cd mxnet \
   && cp make/config.mk . \
   && echo "USE_CUDA=1" >> config.mk \
   && echo "USE_CUDA_PATH=/usr/local/cuda" >> config.mk \
