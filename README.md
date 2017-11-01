@@ -29,9 +29,9 @@ $ bash setup.sh
 
 ### 1. Arrange images into their respective directories
 
-A training data directory (`images/train`) and validation data directory (`images/valid`) should containing one subdirectory per image class.
+A training data directory (`images/train`), validation data directory (`images/valid`), and test data directory (`images/test`) should containing one subdirectory per image class.
 
-For example, arrange training data and validation data as follows.
+For example, arrange training, validation, and test data as follows.
 
 ```
 images/
@@ -52,6 +52,15 @@ images/
         watch/
             watch101.jpg
             watch102.jpg
+            ...
+    test/
+        airplanes/
+            airplane201.jpg
+            airplane202.jpg
+            ...
+        watch/
+            watch201.jpg
+            watch202.jpg
             ...
 ```
 

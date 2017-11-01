@@ -2,7 +2,7 @@
 
 ## Speed (images/sec)
 
-- dataset: 8000 samles
+- dataset: 8000 samples
 - batch size: 10, 20, 30, 40
 - Optimizer: SGD
 - GPU: Maxwell TITAN X (12GiB Memory)
