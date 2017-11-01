@@ -66,6 +66,7 @@ test:
   # model_epoch_up_to: 10  # test from model_epoch to model_epoch_up_to respectively
   test_batch_size: 10
   # top_k: 10
+  # rgb_mean: '123.68,116.779,103.939'  # a tuple of size 3 for the mean rgb
   classification_report_output: 1
   # classification_report_digits: 3
   confusion_matrix_output: 1

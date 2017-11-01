@@ -32,6 +32,8 @@ try:
     use_latest = config['test'].get('use_latest', 1)
     batch_size = config['test'].get('test_batch_size', 10)
     top_k = config['test'].get('top_k', 10)
+    rgb_mean = config['test'].get('rgb_mean', '123.68,116.779,103.939')
+    rgb_mean = [mean for mean in rgb_mean.split(',')]
 except AttributeError:
     print('Error: Missing test section at config.yml')
     sys.exit(1)
@@ -92,6 +94,9 @@ def load_image_record(imgrec, batch_size, data_shape):
     rec = mx.io.ImageRecordIter(
         path_imgrec         = imgrec,
         label_width         = 1,
+        mean_r              = rgb_mean[0],
+        mean_g              = rgb_mean[1],
+        mean_b              = rgb_mean[2],
         data_name           = 'data',
         label_name          = 'softmax_label',
         batch_size          = batch_size,
