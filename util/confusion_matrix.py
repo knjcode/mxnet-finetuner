@@ -49,16 +49,25 @@ result_file = sys.argv[4]
 with open(config_file) as rf:
     config = yaml.safe_load(rf)
 
+with open(labels_file) as sf:
+    labels = [l.split(' ')[-1].strip() for l in sf.readlines()]
+
 try:
     cm_fontsize = config['test'].get('confusion_matrix_fontsize', 12)
-    cm_figsize = config['test'].get('confusion_matrix_figsize', '16,12')
+    cm_figsize = config['test'].get('confusion_matrix_figsize', 'auto')
+    if cm_figsize == 'auto':
+        num_class = len(labels)
+        if 0 < num_class <= 10:
+            cm_figsize = '8,6'
+        elif 10 < num_class <= 30:
+            cm_figsize = '12,9'
+        else:
+            cm_figsize = '16,12'
     cm_figsize = tuple(float(i) for i in cm_figsize.split(','))
 except AttributeError:
     print('Error: Missing test and/or data section at config.yml')
     sys.exit(1)
 
-with open(labels_file) as sf:
-    labels = [l.split(' ')[-1].strip() for l in sf.readlines()]
 
 with open(result_file) as rf:
     lines = rf.readlines()
