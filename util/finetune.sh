@@ -24,8 +24,6 @@ else
 fi
 echo "GPU_OPTION=$GPU_OPTION"
 
-USE_JAPANESE_LABEL=$(get_conf "$config" ".data.use_japanese_label" "0")
-
 MODELS=$(get_conf_array "$config" ".finetune.models" "")
 if [[ "$MODELS" = "" ]]; then
   MODELS=$(get_conf_array "$config" ".finetune.pretrained_models" "imagenet1k-nin")
@@ -239,7 +237,7 @@ for MODEL in $MODELS; do
           REPORT="logs/$MODEL_PREFIX-epoch$MODEL_EPOCH-valid-classification_report.txt"
           python3 util/classification_report.py "$CONFIG_FILE" "$LABELS" "$PREDICT_RESULTS_LOG" "$REPORT"
           if [[ -e "$REPORT" ]]; then
-            print_classification_report "$REPORT" "$USE_JAPANESE_LABEL"
+            print_classification_report "$REPORT"
           else
             echo 'Error: classification report does not exist.' 1>&2
           fi

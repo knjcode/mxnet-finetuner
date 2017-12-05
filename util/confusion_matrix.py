@@ -10,6 +10,7 @@
 # References
 #   http://hayataka2049.hatenablog.jp/entry/2016/12/15/222339
 #   http://qiita.com/hik0107/items/67ad4cfbc9e84032fc6b
+#   http://minus9d.hatenablog.com/entry/2015/07/16/231608
 #
 
 import sys
@@ -19,8 +20,20 @@ matplotlib.use('agg')
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
+import unicodedata
 from pandas_ml import ConfusionMatrix
 from sklearn.metrics import confusion_matrix
+
+
+def is_japanese(string):
+    for ch in string:
+        name = unicodedata.name(ch)
+        if "CJK UNIFIED" in name \
+        or "HIRAGANA" in name \
+        or "KATAKANA" in name:
+            return True
+    return False
+
 
 try:
     reload(sys)
@@ -44,11 +57,6 @@ except AttributeError:
     print('Error: Missing test and/or data section at config.yml')
     sys.exit(1)
 
-try:
-    use_japanese_label = config['data'].get('use_japanese_label', 0)
-except AttributeError:
-    use_japanese_label = 0
-
 with open(labels_file) as sf:
     labels = [l.split(' ')[-1].strip() for l in sf.readlines()]
 
@@ -62,7 +70,7 @@ with open(result_file) as rf:
 y_true = [labels[int(i[1])] for i in results]
 y_pred = [labels[int(i[2])] for i in results]
 
-if use_japanese_label:
+if is_japanese(''.join(labels)):
     matplotlib.rcParams['font.family'] = 'IPAexGothic'
     sns.set(font=['IPAexGothic'])
 else:

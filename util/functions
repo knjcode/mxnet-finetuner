@@ -253,15 +253,10 @@ get_layer_before_fullc() {
 
 print_classification_report() {
   local report="$1"
-  local use_japanese_label="$2"
   local body
 
-  if [[ $use_japanese_label = 1 ]]; then
-    body=$(cat "$report" | tail -n +4 | \
-          sed -e 's/precision/a precision/' -e 's/avg \/ total/avg\/total/' | \
-          column -t | sed -e 's/^a /  /' | sed -e '2i \ ' | sed -e '$ i \ ')
-  else
-    body=$(cat "$report" | tail -n +4)
-  fi
+  body=$(cat "$report" | tail -n +4 | \
+        sed -e 's/precision/a precision/' -e 's/avg \/ total/avg\/total/' | \
+        column -t | sed -e 's/^a /  /' | sed -e '2i \ ' | sed -e '$ i \ ')
   echo "$body"
 }

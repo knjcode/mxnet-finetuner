@@ -14,8 +14,6 @@ TEST="/images/test"
 DATA_TEST="/data/test"
 LATEST_RESULT_LOG="logs/latest_result.txt"
 
-USE_JAPANESE_LABEL=$(get_conf "$config" ".data.use_japanese_label" "0")
-
 CONFUSION_MATRIX_OUTPUT=$(get_conf "$config"  ".test.confusion_matrix_output" "1")
 SLACK_UPLOAD=$(get_conf "$config"  ".test.confusion_matrix_slack_upload" "0")
 SLACK_CHANNELS=$(get_conf_array "$config"  ".test.confusion_matrix_slack_channels" "general")
@@ -85,7 +83,7 @@ for CUR_EPOCH in $EPOCHS; do
       REPORT="logs/$MODEL-epoch$CUR_EPOCH-test-classification_report.txt"
       python3 util/classification_report.py "$CONFIG_FILE" "$LABELS" "$PREDICT_RESULTS_LOG" "$REPORT"
       if [[ -e "$REPORT" ]]; then
-        print_classification_report "$REPORT" "$USE_JAPANESE_LABEL"
+        print_classification_report "$REPORT"
       else
         echo 'Error: classification report does not exist.' 1>&2
       fi
