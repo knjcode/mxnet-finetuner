@@ -25,7 +25,7 @@ RUN apt-get update \
 RUN cd /usr/src/gtest && cmake CMakeLists.txt && make && cp *.a /usr/lib && \
     cd /tmp && wget https://bootstrap.pypa.io/get-pip.py && python3 get-pip.py && python2 get-pip.py
 
-RUN git clone --recursive https://github.com/apache/incubator-mxnet.git mxnet --branch 0.12.0 \
+RUN git clone --recursive https://github.com/apache/incubator-mxnet.git mxnet --branch 1.0.0 \
   && cd mxnet \
   && cp make/config.mk . \
   && echo "USE_CUDA=1" >> config.mk \
