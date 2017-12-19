@@ -53,6 +53,8 @@ if __name__ == "__main__":
                         help='the pre-trained model')
     parser.add_argument('--layer-before-fullc', type=str, default='flatten0',
                         help='the name of the layer before the last fullc layer')
+    parser.add_argument('--num-active-layers', type=int, default=0,
+                        help='num of last N-layers to train. if 0 specified, train all layers')
     # use less augmentations for fine-tune
     # data.set_data_aug_level(parser, 1)
     # use a small learning rate and less regularizations
@@ -87,9 +89,53 @@ if __name__ == "__main__":
         (new_sym, new_args) = get_fine_tune_model(
             sym, arg_params, args.num_classes, args.layer_before_fullc)
 
+    # freeze layers
+    fixed_params = []
+    train_params = []
+    if args.num_active_layers > 0:
+        print('--------------------------------------')
+        active_layer_num = args.num_active_layers + 4 # add the last fully-connected layers
+        all_layers = new_sym.get_internals()
+
+        freeze_layers = all_layers.list_outputs()[0:-active_layer_num-1]
+        active_layers = all_layers.list_outputs()[-active_layer_num-1:-1]
+
+        if len(freeze_layers) > 15:
+            print('...(snip)...')
+            for layer in freeze_layers[-15:]:
+                print(layer)
+        else:
+            for layer in freeze_layers:
+                print(layer)
+
+        print('----- train the following layers -----')
+
+        if len(active_layers) > 15:
+            for layer in active_layers[:15]:
+                print(layer)
+            print('...(snip)...')
+        else:
+            for layer in active_layers:
+                print(layer)
+
+        for k in new_args:
+            is_active = False
+            for a in active_layers:
+                if k == a:
+                    is_active = True
+                    train_params.append(k)
+            if not is_active:
+                fixed_params.append(k)
+
+        print('--------------------------------------')
+        print("Train the last fc layers and the following layers: %s" % ', '.join(train_params))
+    else:
+        print("Train all the layers")
+
     # train
     fit.fit(args        = args,
             network     = new_sym,
             data_loader = data.get_rec_iter,
             arg_params  = new_args,
-            aux_params  = aux_params)
+            aux_params  = aux_params,
+            fixed_params_names = fixed_params)

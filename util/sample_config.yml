@@ -25,6 +25,7 @@ finetune:
   optimizers:  # specify optimizers to use
     - sgd
     # optimizers: sgd, dcasgd, nag, sgld, adam, adagrad, rmsprop, adadelta, ftrl, adamax, nadam
+  # num_active_layers: 1  # train last n-layers without last fully-connected layer
   num_epochs: 10  # max num of epochs
   # load_epoch: 0  # specify when using user fine-tuned model
   lr: 0.0001  # initial learning rate
