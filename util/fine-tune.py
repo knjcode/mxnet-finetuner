@@ -55,6 +55,8 @@ if __name__ == "__main__":
                         help='the name of the layer before the last fullc layer')
     parser.add_argument('--num-active-layers', type=int, default=0,
                         help='num of last N-layers to train. if 0 specified, train all layers')
+    parser.add_argument('--print-layers-and-exit', action='store_true',
+                        help='print the number of layers before the last fully connected layer and exit')
     # use less augmentations for fine-tune
     # data.set_data_aug_level(parser, 1)
     # use a small learning rate and less regularizations
@@ -88,6 +90,15 @@ if __name__ == "__main__":
         # remove the last fullc layer
         (new_sym, new_args) = get_fine_tune_model(
             sym, arg_params, args.num_classes, args.layer_before_fullc)
+
+    if args.print_layers_and_exit:
+        print("Number of the layer of {0}".format(args.pretrained_model))
+        print_layers = new_sym.get_internals().list_outputs()[:-5]
+        for index, layer in enumerate(print_layers):
+            print("{0:5d}: {1}".format(len(print_layers)-index, layer))
+        print("If you set the number of a layer displayed above to num_active_layers in config.yml,")
+        print("only layers whose number is not greater than the number of the specified layer will be train.")
+        sys.exit(0)
 
     # freeze layers
     fixed_params = []

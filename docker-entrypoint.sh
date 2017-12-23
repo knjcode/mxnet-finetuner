@@ -33,6 +33,8 @@ elif [[ "$TASK" = 'gen_test' ]]; then
   util/gen_test.sh "$CONFIG_FILE" "$IMAGE_SIZE"
 elif [[ "$TASK" = 'test' ]]; then
   util/test.sh
+elif [[ "$TASK" = 'num_layers' ]]; then
+  util/num_layers.sh "$ARG1"
 elif [[ "$TASK" = 'jupyter' ]]; then
   jupyter notebook --no-browser --port=8888 --ip=0.0.0.0 --allow-root
 elif [[ "$TASK" = 'version' ]]; then
