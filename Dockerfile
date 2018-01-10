@@ -1,4 +1,4 @@
-FROM nvidia/cuda:9.0-cudnn7-devel
+FROM nvidia/cuda:9.0-devel
 
 RUN apt-get update \
   && apt-get upgrade -y \
@@ -25,15 +25,18 @@ RUN apt-get update \
 RUN cd /usr/src/gtest && cmake CMakeLists.txt && make && cp *.a /usr/lib && \
     cd /tmp && wget https://bootstrap.pypa.io/get-pip.py && python3 get-pip.py && python2 get-pip.py
 
+# install libcudnn 7.0.4.31
+ENV CUDNN_VERSION 7.0.4.31
+LABEL com.nvidia.cudnn.version="${CUDNN_VERSION}"
+RUN apt-get update && apt-get install -y --no-install-recommends \
+            libcudnn7=$CUDNN_VERSION-1+cuda9.0 \
+            libcudnn7-dev=$CUDNN_VERSION-1+cuda9.0 \
+  && rm -rf /var/lib/apt/lists/*
+
+ENV BUILD_OPTS "USE_CUDA=1 USE_CUDA_PATH=/usr/local/cuda USE_CUDNN=1"
 RUN git clone --recursive https://github.com/apache/incubator-mxnet.git mxnet --branch 1.0.0 \
   && cd mxnet \
-  && cp make/config.mk . \
-  && echo "USE_CUDA=1" >> config.mk \
-  && echo "USE_CUDA_PATH=/usr/local/cuda" >> config.mk \
-  && echo "USE_CUDNN=1" >> config.mk \
-  && echo "USE_BLAS=atlas" >> config.mk \
-  && echo "USE_DIST_KVSTORE=1" >> config.mk \
-  && make -j$(nproc) \
+  && make -j$(nproc) $BUILD_OPTS \
   && rm -r build
 
 RUN pip2 install nose pylint numpy nose-timer requests tqdm
