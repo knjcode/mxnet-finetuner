@@ -65,6 +65,7 @@ MIN_RANDOM_SCALE=$(get_conf "$config" ".finetune.min_random_scale" "1")
 RGB_MEAN=$(get_conf "$config" ".finetune.rgb_mean" "123.68,116.779,103.939")
 MONITOR=$(get_conf "$config" ".finetune.monitor" "0")
 PAD_SIZE=$(get_conf "$config" ".finetune.pad_size" "0")
+NUM_ACTIVE_LAYERS=$(get_conf "$config" ".finetune.num_active_layers" "0")
 AUTO_TEST=$(get_conf "$config" ".finetune.auto_test" "1")
 TRAIN_ACCURACY_GRAPH_OUTPUT=$(get_conf "$config" ".finetune.train_accuracy_graph_output" "1")
 TRAIN_SLACK_UPLOAD=$(get_conf "$config" ".finetune.train_accuracy_graph_slack_upload" "0")
@@ -125,7 +126,7 @@ for MODEL in $MODELS; do
     # fine-tuning
     # Determine LAYER_BEFORE_FULLC and IMAGE_SIZE
     LAYER_BEFORE_FULLC=$(get_layer_before_fullc "$MODEL")
-    TRAIN_COMMAND="python util/fine-tune.py --pretrained-model $MODEL --layer-before-fullc $LAYER_BEFORE_FULLC"
+    TRAIN_COMMAND="python util/fine-tune.py --pretrained-model $MODEL --layer-before-fullc $LAYER_BEFORE_FULLC --num-active-layers $NUM_ACTIVE_LAYERS"
   fi
   echo "TRAIN_COMMAND=$TRAIN_COMMAND"
 

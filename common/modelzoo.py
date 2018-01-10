@@ -80,3 +80,11 @@ def download_model(model_name, dst_dir='./', meta_info=None):
     assert 'params' in meta, "mssing parameter file url"
     download_file(meta['params'], model_name+'-0000.params')
     return (model_name, 0)
+
+
+if __name__ == '__main__':
+    import sys
+    if len(sys.argv) == 3:
+        model_name = sys.argv[1]
+        dst_dir = sys.argv[2]
+        download_model(model_name, dst_dir)

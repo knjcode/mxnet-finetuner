@@ -281,6 +281,32 @@ $ docker-compose run finetuner
 
 ## Misc
 
+### How to freeze layers during fine-tuning
+
+If you set the number of target layer to `finetune.num_active_layers` in `config.yml` as below, only layers whose number is not greater than the number of the specified layer will be train.
+
+```
+finetune:
+  models:
+    - imagenet1k-nin
+  optimizers:
+    - sgd
+  num_active_layers: 6
+```
+
+The default for `finetune.num_active_layers` is `0`, in which case all layers are trained.
+
+If you set `1` to `finetune.num_active_layers`, only the last fully-connected layers are trained.
+
+You can check the layer numbers of various pretrained models with `num_layers` command.
+
+```
+$ docker-compose run finetuner num_layers <pretrained model name>
+```
+
+For detailes, please check [How to freeze layers during fine-tuning](docs/freeze_layers.md)
+
+
 ### Training from scratch
 
 Edit `config.yml` as below.
@@ -368,6 +394,7 @@ finetune:
   optimizers:  # specify optimizers to use
     - sgd
     # optimizers: sgd, dcasgd, nag, sgld, adam, adagrad, rmsprop, adadelta, ftrl, adamax, nadam
+  # num_active_layers: 1  # train last n-layers without last fully-connected layer
   num_epochs: 10  # max num of epochs
   # load_epoch: 0  # specify when using user fine-tuned model
   lr: 0.0001  # initial learning rate

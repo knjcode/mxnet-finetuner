@@ -36,8 +36,8 @@ RUN git clone --recursive https://github.com/apache/incubator-mxnet.git mxnet --
   && make -j$(nproc) \
   && rm -r build
 
-RUN pip2 install nose pylint numpy nose-timer requests
-RUN pip3 install nose pylint numpy nose-timer requests
+RUN pip2 install nose pylint numpy nose-timer requests tqdm
+RUN pip3 install nose pylint numpy nose-timer requests tqdm
 
 RUN wget --quiet https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 \
   && chmod +x jq-linux64 \
