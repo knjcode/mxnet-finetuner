@@ -63,7 +63,7 @@ if [[ "$TRAIN_RATIO" != "1" ]]; then
   mv images-valid* "${DATA_VALID}"
 
   # Create valid labels.txt from train direcotry
-  find ${TRAIN}/* -type d | awk -F/ '{print NR-1, $NF}' > ${DATA_VALID}/labels.txt
+  find ${TRAIN}/* -type d | LC_ALL=C sort | awk -F/ '{print NR-1, $NF}' > ${DATA_VALID}/labels.txt
 else
   # TRAIN_RATIO = 1.0
   # Generate validation image list from valid directory.
@@ -88,7 +88,7 @@ else
   fi
 
   # Create valid labels.txt
-  find ${VALID}/* -type d | awk -F/ '{print NR-1, $NF}' > ${DATA_VALID}/labels.txt
+  find ${VALID}/* -type d | LC_ALL=C sort | awk -F/ '{print NR-1, $NF}' > ${DATA_VALID}/labels.txt
 fi
 
 # Check wheter train images exist.
@@ -106,4 +106,4 @@ python3 -u /mxnet/tools/im2rec.py --resize "${RESIZE}" --quality "${QUALITY}" --
 mv images-train* "${DATA_TRAIN}"
 
 # Create train labels.txt
-find ${TRAIN}/* -type d | awk -F/ '{print NR-1, $NF}' > ${DATA_TRAIN}/labels.txt
+find ${TRAIN}/* -type d | LC_ALL=C sort | awk -F/ '{print NR-1, $NF}' > ${DATA_TRAIN}/labels.txt

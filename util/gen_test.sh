@@ -53,4 +53,4 @@ python3 -u /mxnet/tools/im2rec.py --resize "${RESIZE}" --quality "${QUALITY}" --
 mv images-test* "${DATA_TEST}"
 
 # Create labels.txt
-find ${TEST}/* -type d | awk -F/ '{print NR-1, $NF}' > ${DATA_TEST}/labels.txt
+find ${TEST}/* -type d | LC_ALL=C sort | awk -F/ '{print NR-1, $NF}' > ${DATA_TEST}/labels.txt
