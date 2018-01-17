@@ -22,6 +22,7 @@ TRAIN="/images/train"
 VALID="/images/valid"
 DATA_TRAIN="/data/train"
 DATA_VALID="/data/valid"
+mkdir -p $DATA_TRAIN $DATA_VALID
 
 NUM_THREAD=$(get_conf "$config" ".common.num_threads" "4")
 TRAIN_RATIO=$(get_conf "$config" ".data.train_ratio" "1")
@@ -62,8 +63,11 @@ if [[ "$TRAIN_RATIO" != "1" ]]; then
                                    "images-valid-${RESIZE}" "${TRAIN}/"
   mv images-valid* "${DATA_VALID}"
 
-  # Create valid labels.txt from train direcotry
+  # Create valid labels.txt from train directory
   find ${TRAIN}/* -type d | LC_ALL=C sort | awk -F/ '{print NR-1, $NF}' > ${DATA_VALID}/labels.txt
+
+  # Create valid images.txt from train directory
+  LC_ALL=C $CUR_DIR/counter.sh "${TRAIN}" | sed -e '1d' > ${DATA_VALID}/images-valid-${RESIZE}.txt
 else
   # TRAIN_RATIO = 1.0
   # Generate validation image list from valid directory.
@@ -89,6 +93,9 @@ else
 
   # Create valid labels.txt
   find ${VALID}/* -type d | LC_ALL=C sort | awk -F/ '{print NR-1, $NF}' > ${DATA_VALID}/labels.txt
+
+  # Create valid images.txt
+  LC_ALL=C $CUR_DIR/counter.sh "${VALID}" | sed -e '1d' > ${DATA_VALID}/images-valid-${RESIZE}.txt
 fi
 
 # Check wheter train images exist.
@@ -107,3 +114,6 @@ mv images-train* "${DATA_TRAIN}"
 
 # Create train labels.txt
 find ${TRAIN}/* -type d | LC_ALL=C sort | awk -F/ '{print NR-1, $NF}' > ${DATA_TRAIN}/labels.txt
+
+# Create train images.txt
+LC_ALL=C $CUR_DIR/counter.sh "${TRAIN}" | sed -e '1d' > ${DATA_TRAIN}/images-train-${RESIZE}.txt

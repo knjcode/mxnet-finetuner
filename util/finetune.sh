@@ -147,6 +147,26 @@ for MODEL in $MODELS; do
     $CUR_DIR/gen_train.sh "$CONFIG_FILE" "$MODEL_IMAGE_SIZE" || exit 1
   fi
 
+  # Check the number of image files. If it is different from previous one, regenerate images records
+  diff --brief <(LC_ALL=C $CUR_DIR/counter.sh $TRAIN | sed -e '1d') <(cat $DATA_TRAIN/images-train-$IMAGE_SIZE.txt) > /dev/null 2>&1
+  if [ "$?" -eq 1 ]; then
+    echo "$DATA_TRAIN/images-train-$IMAGE_SIZE.rec is outdated." 1>&2
+    echo 'Generate image records for fine-tuning.' 1>&2
+    $CUR_DIR/gen_train.sh "$CONFIG_FILE" "$IMAGE_SIZE" || exit 1
+  fi
+  diff --brief <(LC_ALL=C $CUR_DIR/counter.sh $VALID | sed -e '1d') <(cat $DATA_VALID/images-valid-$IMAGE_SIZE.txt) > /dev/null 2>&1
+  if [ "$?" -eq 1 ]; then
+    echo "$DATA_VALID/images-valid-$IMAGE_SIZE.rec is outdated." 1>&2
+    echo 'Generate validation image records for fine-tuning.' 1>&2
+    $CUR_DIR/gen_train.sh "$CONFIG_FILE" "$IMAGE_SIZE" || exit 1
+  fi
+  diff --brief <(LC_ALL=C $CUR_DIR/counter.sh $VALID | sed -e '1d') <(cat $DATA_VALID/images-valid-$MODEL_IMAGE_SIZE.txt) > /dev/null 2>&1
+  if [ "$?" -eq 1 ]; then
+    echo "$DATA_VALID/images-valid-$MODEL_IMAGE_SIZE.rec is outdated." 1>&2
+    echo 'Generate validation image records for fine-tuning.' 1>&2
+    $CUR_DIR/gen_train.sh "$CONFIG_FILE" "$MODEL_IMAGE_SIZE" || exit 1
+  fi
+
 
   LABELS_TRAIN="$DATA_TRAIN/labels.txt"
   LABELS_VALID="$DATA_VALID/labels.txt"
