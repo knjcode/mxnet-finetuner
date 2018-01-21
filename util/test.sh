@@ -46,7 +46,15 @@ MODEL_IMAGE_SIZE=$(get_image_size "$MODEL")
 if [ "$DATA_TEST/images-test-$MODEL_IMAGE_SIZE.rec" -ot "$TEST" ]; then
   echo "$DATA_TEST/images-test-$MODEL_IMAGE_SIZE.rec does not exist or is outdated." 1>&2
   echo "Generate image records for test." 1>&2
-  util/gen_test.sh "$CONFIG_FILE" "$MODEL_IMAGE_SIZE"
+  $CUR_DIR/gen_test.sh "$CONFIG_FILE" "$MODEL_IMAGE_SIZE"
+fi
+
+# Check the number of image files. If it is different from previous one, regenerate images records
+diff --brief <(LC_ALL=C $CUR_DIR/counter.sh $TEST | sed -e '1d') <(cat $DATA_TEST/images-test-$MODEL_IMAGE_SIZE.txt) > /dev/null 2>&1
+if [ "$?" -eq 1 ]; then
+  echo "$DATA_TEST/images-test-$MODEL_IMAGE_SIZE.rec is outdated." 1>&2
+  echo 'Generate image records for test.' 1>&2
+  $CUR_DIR/gen_test.sh "$CONFIG_FILE" "$MODEL_IMAGE_SIZE" || exit 1
 fi
 
 # TARGET EPOCHS

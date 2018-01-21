@@ -20,6 +20,7 @@ config=$(jq -Mc '.' config.json)
 
 TEST="/images/test"
 DATA_TEST="/data/test"
+mkdir -p "${DATA_TEST}"
 
 NUM_THREAD=$(get_conf "$config"  ".common.num_threads" "4")
 QUALITY=$(get_conf "$config"  ".data.quality" "95")
@@ -54,3 +55,6 @@ mv images-test* "${DATA_TEST}"
 
 # Create labels.txt
 find ${TEST}/* -type d | LC_ALL=C sort | awk -F/ '{print NR-1, $NF}' > ${DATA_TEST}/labels.txt
+
+# Create images.txt
+LC_ALL=C $CUR_DIR/counter.sh "${TEST}" | sed -e '1d' > ${DATA_TEST}/images-test-${RESIZE}.txt
