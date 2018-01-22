@@ -75,3 +75,12 @@ test:
   # confusion_matrix_slack_upload: 1
   # confusion_matrix_slack_channels:
   #   - general
+
+# export settings
+export:
+  use_latest: 1 # Use last trained model. If set this option, model_prefix and model_epoch are ignored
+  model_prefix: 201705292200-imagenet1k-nin-sgd
+  model_epoch: 1
+  # top_k: 5  # report the top-k accuracy
+  # rgb_mean: '123.68,116.779,103.939'  # a tuple of size 3 for the mean rgb
+  # center_crop: 1  # if or not center crop at image preprocessing

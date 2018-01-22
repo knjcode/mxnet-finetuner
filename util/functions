@@ -8,6 +8,7 @@ Commands: (default is finetune)
   gen_train <image_size>:  Generate train and validation image recordIO files.
   gen_test <image_size>:   Generate test image recordIO files.
   test:                    test with specified model.
+  export:                  Generate MXNet models for mxnet-model-server.
   num_layers <model_name>: Print the number of layers before the last fullc layer.
   jupyter:                 Launch jupyter notebook. Add --service-port option
                            when executing command.
@@ -53,6 +54,30 @@ update_config() {
   if [[ ! "$DEVICES" = "" ]]; then
     sed -i -e 's/# gpus/gpus/g' "$cur_dir/$config_file" \
     && echo "Detect GPUs. Activate common.gpus option in $config_file"
+  fi
+}
+
+generate_export_model_signature() {
+  local cur_dir="$1"
+  local MODEL_IMAGE_SIZE="$2"
+  local RGB_MEAN="$3"
+  local NUM_CLASSES="$4"
+  local EXPORT_TMP_DIR="$5"
+  mo < "$cur_dir/export_tmpl/signature.mo" > "$EXPORT_TMP_DIR/signature.json" \
+  && echo "Generate signature.json"
+}
+
+generate_export_model_service() {
+  local cur_dir="$1"
+  local CENTER_CROP="$2"
+  local TOP_K="$3"
+  local SERVICE_TMP_DIR="$4"
+  if [[ "$CENTER_CROP" = '1' ]]; then
+    mo < "$cur_dir/export_tmpl/mxnet_vision_service_center_crop.mo" > "$SERVICE_TMP_DIR/mxnet_finetuner_service.py" \
+    && echo "Generate mxnet_finetuner_service.py"
+  else
+    mo < "$cur_dir/export_tmpl/mxnet_vision_service.mo" > "$SERVICE_TMP_DIR/mxnet_finetuner_service.py" \
+    && echo "Generate mxnet_finetuner_service.py"
   fi
 }
 
