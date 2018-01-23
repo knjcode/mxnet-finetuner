@@ -6,10 +6,10 @@ You can use this model as below
 
 ## Download parameter and symbol files
 
-se-resnext-imagenet-50-0-0125.params
+se-resnext-imagenet-50-0-0125.params  
 https://drive.google.com/uc?id=0B_M7XF_l0CzXOHNybXVWLWZteEE
 
-se-resnext-imagenet-50-0-symbol.json
+se-resnext-imagenet-50-0-symbol.json  
 https://raw.githubusercontent.com/bruinxiong/SENet.mxnet/master/se-resnext-imagenet-50-0-symbol.json
 
 ## Rearrange downloaded files
