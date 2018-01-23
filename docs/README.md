@@ -6,3 +6,4 @@ Contents
 * [Benchmark](benchmark.md)
 * [Training from scratch](train_from_scratch.md)
 * [Use DenseNet](use_densenet.md)
+* [Use SE-ResNext](use_se_resnext.md)

@@ -338,6 +338,15 @@ You can use this model.
 For detailes, please check [Use DenseNet](docs/use_densenet.md)
 
 
+### Use SE-ResNeXt-50
+
+ImageNet pretrained SE-ResNeXt-50 model is introduced on [SENet.mxnet].
+
+You can use this model as below
+
+For details, please check [Use SE-ResNeXt](docs/use_se_resnext.md)
+
+
 ## Try image classification with jupyter notebook
 
 ```
@@ -483,3 +492,4 @@ test:
 [MXNet model gallery]: https://github.com/dmlc/mxnet-model-gallery
 [Reproduce ResNet-v2 using MXNet]: https://github.com/tornadomeet/ResNet
 [Caltech 101]: http://www.vision.caltech.edu/Image_Datasets/Caltech101/
+[SENet.mxnet]: https://github.com/bruinxiong/SENet.mxnet
