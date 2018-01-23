@@ -174,7 +174,7 @@ Predict result and classification report and/or confusion matrix are save at `lo
 
 To use these pretrained models, specify the following pretrained model name in `config.yml`.
 
-For detailes, please check [Available pretrained models](docs/pretrained_models.md)
+For details, please check [Available pretrained models](docs/pretrained_models.md)
 
 
 ## Available optimizers
@@ -304,7 +304,7 @@ You can check the layer numbers of various pretrained models with `num_layers` c
 $ docker-compose run finetuner num_layers <pretrained model name>
 ```
 
-For detailes, please check [How to freeze layers during fine-tuning](docs/freeze_layers.md)
+For details, please check [How to freeze layers during fine-tuning](docs/freeze_layers.md)
 
 
 ### Training from scratch
@@ -326,7 +326,7 @@ finetune:
     - scratch-inception-v3
 ```
 
-For detailes, please check [Available models training from scratch](docs/train_from_scratch.md)
+For details, please check [Available models training from scratch](docs/train_from_scratch.md)
 
 
 ### Use DenseNet
@@ -335,10 +335,10 @@ ImageNet pretrained DenseNet-169 model is introduced on [A MXNet implementation 
 
 You can use this model.
 
-For detailes, please check [Use DenseNet](docs/use_densenet.md)
+For details, please check [Use DenseNet](docs/use_densenet.md)
 
 
-### Use SE-ResNeXt-50
+### Use SE-ResNeXt
 
 ImageNet pretrained SE-ResNeXt-50 model is introduced on [SENet.mxnet].
 
