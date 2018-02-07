@@ -347,6 +347,19 @@ You can use this model as below
 For details, please check [Use SE-ResNeXt](docs/use_se_resnext.md)
 
 
+## Export your trained model
+
+You can export your trained model in a format that can be used with [Model Server for Apache MXNet] as follows.
+
+```
+$ docker-compose run finetuner export
+```
+
+The exported file (extension is .model) is saved at `model/` directory.
+
+Please check [export settings](#export-settings) for export settings.
+
+
 ## Try image classification with jupyter notebook
 
 ```
@@ -472,6 +485,20 @@ test:
 ```
 
 
+### export settings
+
+```
+# export settings
+export:
+  use_latest: 1 # Use last trained model. If set this option, model_prefix and model_epoch are ignored
+  model_prefix: 201705292200-imagenet1k-nin-sgd
+  model_epoch: 1
+  # top_k: 5  # report the top-k accuracy
+  # rgb_mean: '123.68,116.779,103.939'  # a tuple of size 3 for the mean rgb
+  # center_crop: 1  # if or not center crop at image preprocessing
+```
+
+
 # Acknowledgement
 
 - [MXNet]
@@ -493,3 +520,4 @@ test:
 [Reproduce ResNet-v2 using MXNet]: https://github.com/tornadomeet/ResNet
 [Caltech 101]: http://www.vision.caltech.edu/Image_Datasets/Caltech101/
 [SENet.mxnet]: https://github.com/bruinxiong/SENet.mxnet
+[Model Server for Apache MXNet]: https://github.com/awslabs/mxnet-model-server

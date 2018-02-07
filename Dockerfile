@@ -13,6 +13,8 @@ RUN apt-get update \
     libcurl4-openssl-dev \
     libgtest-dev \
     libopencv-dev \
+    libprotoc-dev \
+    protobuf-compiler \
     python-opencv \
     python-dev \
     python-numpy \
@@ -58,6 +60,14 @@ RUN pip3 install \
   seaborn \
   sklearn-pandas \
   slackclient
+
+# install compiled mxnet
+RUN cd mxnet/python && pip install -e .
+
+# install mxnet-model-server
+RUN git clone https://github.com/awslabs/mxnet-model-server.git --branch v0.2.0 \
+  && cd mxnet-model-server \
+  && pip install -e .
 
 RUN locale-gen en_US.UTF-8
 ENV LANG en_US.UTF-8
