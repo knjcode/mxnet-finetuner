@@ -398,6 +398,7 @@ data:
   quality: 95
   shuffle: 1
   center_crop: 0
+  # test_center_crop: 1
   # resize_short: 256
 ```
 
