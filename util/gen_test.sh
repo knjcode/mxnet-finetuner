@@ -24,7 +24,7 @@ mkdir -p "${DATA_TEST}"
 
 NUM_THREAD=$(get_conf "$config"  ".common.num_threads" "4")
 QUALITY=$(get_conf "$config"  ".data.quality" "95")
-CENTER_CROP=$(get_conf "$config"  ".data.center_crop" "0")
+CENTER_CROP=$(get_conf "$config"  ".data.test_center_crop" "0")
 
 echo "RESIZE=$RESIZE"
 
