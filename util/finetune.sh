@@ -183,6 +183,10 @@ for MODEL in $MODELS; do
   for OPTIMIZER in $OPTIMIZERS; do
     MODEL_PREFIX="$(date +%Y%m%d%H%M%S)-$MODEL-$OPTIMIZER"
     LOGS="logs/$MODEL_PREFIX.log"
+    CONFIG_LOG="logs/$MODEL_PREFIX-config.yml"
+
+    # save config.yml
+    cp "$CONFIG_FILE" "$CONFIG_LOG"
 
     # copy labels.txt
     LABELS="model/$MODEL_PREFIX-labels.txt"
