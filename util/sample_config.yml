@@ -85,3 +85,22 @@ export:
   # top_k: 5  # report the top-k accuracy
   # rgb_mean: '123.68,116.779,103.939'  # a tuple of size 3 for the mean rgb
   # center_crop: 1  # if or not center crop at image preprocessing
+
+# ensemble settings
+ensemble:
+  models:
+    - 20180130074818-imagenet1k-nin-nadam-0003
+    - 20180130075252-imagenet1k-squeezenet-nadam-0003
+    - 20180131105109-imagenet1k-caffenet-nadam-0003
+  # weights: 1,1,1
+  ensemble_batch_size: 10
+  # top_k: 10
+  # rgb_mean: '123.68,116.779,103.939'  # a tuple of size 3 for the mean rgb
+  classification_report_output: 1
+  # classification_report_digits: 3
+  confusion_matrix_output: 1
+  # confusion_matrix_fontsize: 12
+  # confusion_matrix_figsize: 16,12
+  # confusion_matrix_slack_upload: 1
+  # confusion_matrix_slack_channels:
+  #   - general
