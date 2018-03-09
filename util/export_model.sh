@@ -24,16 +24,14 @@ if [[ $USE_LATEST = 1 ]]; then
   MODEL=$(head -n 1 $LATEST_RESULT_LOG)
   EPOCH=$(tail -n 1 $LATEST_RESULT_LOG)
 else
-  MODEL=$(get_conf "$config"  ".export.model_prefix" "")
-  if [[ "$MODEL" = "" ]]; then
+  MODEL_AND_EPOCH=$(get_conf "$config"  ".export.model" "")
+  if [[ "$MODEL_AND_EPOCH" = "" ]]; then
     echo 'Error: export.model_prefix in config.yml is empty.' 1>&2
     exit 1
   fi
-  EPOCH=$(get_conf "$config"  ".export.model_epoch" "")
-  if [[ "$EPOCH" = "" ]]; then
-    echo 'Error: export.model_epoch in config.yml is empty.' 1>&2
-    exit 1
-  fi
+  # Get model_prefix and epoch
+  MODEL=${MODEL_AND_EPOCH%-*}
+  EPOCH=$(echo $MODEL_AND_EPOCH|rev|cut -d'-' -f1|rev|sed "s/0*\([0-9]*[0-9]$\)/\1/g")
 fi
 
 PARAMS="model/$MODEL-$(printf '%04d' $EPOCH).params"

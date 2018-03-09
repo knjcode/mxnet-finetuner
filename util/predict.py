@@ -136,7 +136,7 @@ def make_predict_results(imgrec, batch_size, data_shape, imglst, labels_txt, res
 imgrec =  "%s/images-%s-%d.rec" % (data_dir, target, size)
 imglst = "%s/images-%s-%d.lst" % (data_dir, target, size)
 labels_txt = "model/%s-labels.txt" % model_prefix
-results_log = "logs/%s-epoch%s-%s-results.txt" % (model_prefix, model_epoch, target)
+results_log = "logs/%s-%04d-%s-results.txt" % (model_prefix, model_epoch, target)
 
 make_predict_results(imgrec, batch_size, data_shape, imglst, labels_txt, results_log, top_k, gpus)
 print("Saved predict results to \"%s\"" % results_log)

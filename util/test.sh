@@ -27,16 +27,14 @@ if [[ $USE_LATEST = 1 ]]; then
   MODEL=$(head -n 1 $LATEST_RESULT_LOG)
   EPOCH=$(tail -n 1 $LATEST_RESULT_LOG)
 else
-  MODEL=$(get_conf "$config"  ".test.model_prefix" "")
-  if [[ "$MODEL" = "" ]]; then
-    echo 'Error: test.model_prefix in config.yml is empty.' 1>&2
+  MODEL_AND_EPOCH=$(get_conf "$config"  ".test.model" "")
+  if [[ "$MODEL_AND_EPOCH" = "" ]]; then
+    echo 'Error: test.model in config.yml is empty.' 1>&2
     exit 1
   fi
-  EPOCH=$(get_conf "$config"  ".test.model_epoch" "")
-  if [[ "$EPOCH" = "" ]]; then
-    echo 'Error: test.model_epoch in config.yml is empty.' 1>&2
-    exit 1
-  fi
+  # Get model_prefix and epoch
+  MODEL=${MODEL_AND_EPOCH%-*}
+  EPOCH=$(echo $MODEL_AND_EPOCH|rev|cut -d'-' -f1|rev|sed "s/0*\([0-9]*[0-9]$\)/\1/g")
 fi
 
 # Determine MODEL_IMAGE_SIZE
@@ -78,8 +76,8 @@ for CUR_EPOCH in $EPOCHS; do
   else
     # Make a confusion matrix from prediction results.
     if [[ "$CONFUSION_MATRIX_OUTPUT" = 1 ]]; then
-      PREDICT_RESULTS_LOG="logs/$MODEL-epoch$CUR_EPOCH-test-results.txt"
-      IMAGE="logs/$MODEL-epoch$CUR_EPOCH-test-confusion_matrix.png"
+      PREDICT_RESULTS_LOG="logs/$MODEL-$(printf "%04d" $CUR_EPOCH)-test-results.txt"
+      IMAGE="logs/$MODEL-$(printf "%04d" $CUR_EPOCH)-test-confusion_matrix.png"
       python3 util/confusion_matrix.py "$CONFIG_FILE" "$LABELS" "$IMAGE" "$PREDICT_RESULTS_LOG"
       if [[ "$SLACK_UPLOAD" = 1 ]]; then
         python3 util/slack_file_upload.py "$SLACK_CHANNELS" "$IMAGE"
@@ -87,8 +85,8 @@ for CUR_EPOCH in $EPOCHS; do
     fi
     # Make a classification report from prediction results.
     if [[ "$CLASSIFICATION_REPORT_OUTPUT" = 1 ]]; then
-      PREDICT_RESULTS_LOG="logs/$MODEL-epoch$CUR_EPOCH-test-results.txt"
-      REPORT="logs/$MODEL-epoch$CUR_EPOCH-test-classification_report.txt"
+      PREDICT_RESULTS_LOG="logs/$MODEL-$(printf "%04d" $CUR_EPOCH)-test-results.txt"
+      REPORT="logs/$MODEL-$(printf "%04d" $CUR_EPOCH)-test-classification_report.txt"
       python3 util/classification_report.py "$CONFIG_FILE" "$LABELS" "$PREDICT_RESULTS_LOG" "$REPORT"
       if [[ -e "$REPORT" ]]; then
         print_classification_report "$REPORT"
