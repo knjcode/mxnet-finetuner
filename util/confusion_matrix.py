@@ -72,7 +72,7 @@ except AttributeError:
 with open(result_file) as rf:
     lines = rf.readlines()
     model_prefix = lines[0][14:].strip()
-    model_epoch = int(lines[1][13:].strip())
+    model_epoch = int(lines[1][13:].split(',')[0].strip())
     target_data = lines[2]
     results = [(l.split(' ')[0], l.split(' ')[1], l.split(' ')[2]) for l in lines[3:]]
 

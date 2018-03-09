@@ -347,6 +347,42 @@ You can use this model as below
 For details, please check [Use SE-ResNeXt](docs/use_se_resnext.md)
 
 
+## Averaging ensemble test with trained models
+
+You can do averaging ensemble test using multiple trained models.
+
+If you want to use the following the three trained models,
+
+- `model/20180130074818-imagenet1k-nin-nadam-0003.params`
+- `model/20180130075252-imagenet1k-squeezenet-nadam-0003.params`
+- `model/20180131105109-imagenet1k-caffenet-nadam-0003.params`
+
+edit `config.yml` as blow.
+
+```
+ensemble:
+  models:
+    - 20180130074818-imagenet1k-nin-nadam-0003
+    - 20180130075252-imagenet1k-squeezenet-nadam-0003
+    - 20180131105109-imagenet1k-caffenet-nadam-0003
+```
+
+
+When you are done, you can do averaging ensemble test with the following command.
+
+```
+$ docker-compose run finetuner ensemble test
+```
+
+If you want to use validation dataset, do as follows.
+
+```
+$ docker-compose run finetuner ensemble valid
+```
+
+Averaging ensemble test result and classification report and/or confusion matrix are save at `logs/` directory.
+
+
 ## Export your trained model
 
 You can export your trained model in a format that can be used with [Model Server for Apache MXNet] as follows.
@@ -473,6 +509,30 @@ test:
   model_epoch: 1
   # model_epoch_up_to: 10  # test from model_epoch to model_epoch_up_to respectively
   test_batch_size: 10
+  # top_k: 10
+  # rgb_mean: '123.68,116.779,103.939'  # a tuple of size 3 for the mean rgb
+  classification_report_output: 1
+  # classification_report_digits: 3
+  confusion_matrix_output: 1
+  # confusion_matrix_fontsize: 12
+  # confusion_matrix_figsize: 16,12
+  # confusion_matrix_slack_upload: 1
+  # confusion_matrix_slack_channels:
+  #   - general
+```
+
+
+### ensemble settings
+
+```
+# ensemble settings
+ensemble:
+  models:
+    - 20180130074818-imagenet1k-nin-nadam-0003
+    - 20180130075252-imagenet1k-squeezenet-nadam-0003
+    - 20180131105109-imagenet1k-caffenet-nadam-0003
+  # weights: 1,1,1
+  ensemble_batch_size: 10
   # top_k: 10
   # rgb_mean: '123.68,116.779,103.939'  # a tuple of size 3 for the mean rgb
   classification_report_output: 1

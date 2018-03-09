@@ -35,6 +35,8 @@ elif [[ "$TASK" = 'test' ]]; then
   util/test.sh
 elif [[ "$TASK" = 'export' ]]; then
   util/export_model.sh
+elif [[ "$TASK" = 'ensemble' ]]; then
+  util/ensemble.sh "$ARG1"
 elif [[ "$TASK" = 'num_layers' ]]; then
   util/num_layers.sh "$ARG1"
 elif [[ "$TASK" = 'jupyter' ]]; then
