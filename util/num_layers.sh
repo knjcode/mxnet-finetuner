@@ -7,4 +7,4 @@ source "$CUR_DIR/functions"
 
 MODEL="$1"
 LAYER_BEFORE_FULLC=$(get_layer_before_fullc "$MODEL")
-python util/fine-tune.py --pretrained-model $MODEL --layer-before-fullc $LAYER_BEFORE_FULLC --num-classes 2 --print-layers-and-exit
+python3 util/fine-tune.py --pretrained-model $MODEL --layer-before-fullc $LAYER_BEFORE_FULLC --num-classes 2 --print-layers-and-exit
