@@ -28,15 +28,15 @@ CENTER_CROP=$(get_conf "$config"  ".data.test_center_crop" "0")
 
 echo "RESIZE=$RESIZE"
 
-if [[ $CENTER_CROP = 1 ]]; then
-  CENTER_CROP="True"
-else
-  CENTER_CROP="False"
-fi
 echo "CENTER_CROP=$CENTER_CROP"
+if [[ $CENTER_CROP = 1 ]]; then
+  CENTER_CROP="--center-crop"
+else
+  CENTER_CROP=""
+fi
 
 # Generate test image list from test directory.
-python3 -u /mxnet/tools/im2rec.py --list True --recursive True --shuffle False \
+python3 -u /mxnet/tools/im2rec.py --list --recursive --no-shuffle \
                                  "images-test-${RESIZE}" "${TEST}/"
 
 # Check whether test images exist.
@@ -48,8 +48,8 @@ if [[ "$TEST_IMAGES_NUM" = 0 ]]; then
 fi
 
 # Generate test image record file.
-python3 -u /mxnet/tools/im2rec.py --resize "${RESIZE}" --quality "${QUALITY}" --shuffle False \
-                                 --num-thread "${NUM_THREAD}" --center-crop "${CENTER_CROP}" \
+python3 -u /mxnet/tools/im2rec.py --resize "${RESIZE}" --quality "${QUALITY}" --no-shuffle \
+                                 --num-thread "${NUM_THREAD}" ${CENTER_CROP} \
                                  "images-test-${RESIZE}" "${TEST}/"
 mv images-test* "${DATA_TEST}"
 

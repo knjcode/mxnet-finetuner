@@ -25,7 +25,7 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/*
 
 RUN cd /usr/src/gtest && cmake CMakeLists.txt && make && cp *.a /usr/lib && \
-    cd /tmp && wget https://bootstrap.pypa.io/get-pip.py && python3 get-pip.py && python2 get-pip.py
+    cd /tmp && wget https://bootstrap.pypa.io/get-pip.py && python3 get-pip.py
 
 # install libcudnn 7.0.4.31
 ENV CUDNN_VERSION 7.0.4.31
@@ -36,12 +36,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   && rm -rf /var/lib/apt/lists/*
 
 ENV BUILD_OPTS "USE_CUDA=1 USE_CUDA_PATH=/usr/local/cuda USE_CUDNN=1"
-RUN git clone --recursive https://github.com/apache/incubator-mxnet.git mxnet --branch 1.0.0 \
+RUN git clone --recursive https://github.com/apache/incubator-mxnet.git mxnet --branch 1.1.0 \
   && cd mxnet \
   && make -j$(nproc) $BUILD_OPTS \
   && rm -r build
 
-RUN pip2 install nose pylint numpy nose-timer requests tqdm
 RUN pip3 install nose pylint numpy nose-timer requests tqdm
 
 RUN wget --quiet https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 \

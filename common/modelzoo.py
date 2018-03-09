@@ -18,7 +18,7 @@
 # Modified from https://github.com/dmlc/mxnet/blob/master/example/image-classification/common/modelzoo.py
 
 import os
-from util import download_file
+from common.util import download_file
 
 _base_model_url = 'http://data.mxnet.io/models/'
 _dummy_model_url = 'http://example.com/'

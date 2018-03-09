@@ -116,17 +116,17 @@ for MODEL in $MODELS; do
     NUM_LAYERS=$(get_num_layers "$MODEL")
     if [[ "$NUM_LAYERS" = 'null' ]]; then
       # do not have num-layers
-      TRAIN_COMMAND="python util/train_imagenet.py --network $MODEL"
+      TRAIN_COMMAND="python3 util/train_imagenet.py --network $MODEL"
     else
       # num-layers
       TRIMED_MODEL=$(trim_num_layers "$MODEL")
-      TRAIN_COMMAND="python util/train_imagenet.py --network $TRIMED_MODEL --num-layers $NUM_LAYERS"
+      TRAIN_COMMAND="python3 util/train_imagenet.py --network $TRIMED_MODEL --num-layers $NUM_LAYERS"
     fi
   else
     # fine-tuning
     # Determine LAYER_BEFORE_FULLC and IMAGE_SIZE
     LAYER_BEFORE_FULLC=$(get_layer_before_fullc "$MODEL")
-    TRAIN_COMMAND="python util/fine-tune.py --pretrained-model $MODEL --layer-before-fullc $LAYER_BEFORE_FULLC --num-active-layers $NUM_ACTIVE_LAYERS"
+    TRAIN_COMMAND="python3 util/fine-tune.py --pretrained-model $MODEL --layer-before-fullc $LAYER_BEFORE_FULLC --num-active-layers $NUM_ACTIVE_LAYERS"
   fi
   echo "TRAIN_COMMAND=$TRAIN_COMMAND"
 
