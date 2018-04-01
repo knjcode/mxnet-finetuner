@@ -137,8 +137,7 @@ If you want to use `model/201705292200-imagenet1k-nin-sgd-0001.params`, edit `co
 
 ```
 test:
-  model_prefix: 201705292200-imagenet1k-nin-sgd
-  model_epoch: 1
+  model: 201705292200-imagenet1k-nin-sgd-0001
 ```
 
 When you want to use the latest highest validation accuracy trained model, edit `config.yml` as below.
@@ -148,7 +147,7 @@ test:
   use_latest: 1
 ```
 
-If set this option, `model_prefix` and `model_epoch` are ignored.
+If set this option, `model` is ignored.
 
 When you are done, you can predict with the following command
 
@@ -504,10 +503,9 @@ If `data_aug_level` is set, parameters related to data augumentation will be ove
 
 ```
 test:
-  use_latest: 1  # Use last trained model. If set this option, model_prefix and model_epoch are ignored
-  model_prefix: 201705292200-imagenet1k-nin-sgd
-  model_epoch: 1
-  # model_epoch_up_to: 10  # test from model_epoch to model_epoch_up_to respectively
+  use_latest: 1  # Use last trained model. If set this option, model is ignored
+  model: 201705292200-imagenet1k-nin-sgd-0001
+  # model_epoch_up_to: 10  # test from epoch of model to model_epoch_up_to respectively
   test_batch_size: 10
   # top_k: 10
   # rgb_mean: '123.68,116.779,103.939'  # a tuple of size 3 for the mean rgb
@@ -551,9 +549,8 @@ ensemble:
 ```
 # export settings
 export:
-  use_latest: 1 # Use last trained model. If set this option, model_prefix and model_epoch are ignored
-  model_prefix: 201705292200-imagenet1k-nin-sgd
-  model_epoch: 1
+  use_latest: 1 # Use last trained model. If set this option, model is ignored
+  model: 201705292200-imagenet1k-nin-sgd-0001
   # top_k: 5  # report the top-k accuracy
   # rgb_mean: '123.68,116.779,103.939'  # a tuple of size 3 for the mean rgb
   # center_crop: 1  # if or not center crop at image preprocessing

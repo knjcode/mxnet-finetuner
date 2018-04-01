@@ -248,8 +248,8 @@ for MODEL in $MODELS; do
 
         # Make a confusion matrix from prediction results.
         if [[ $CONFUSION_MATRIX_OUTPUT = 1 ]]; then
-          PREDICT_RESULTS_LOG="logs/$MODEL_PREFIX-epoch$MODEL_EPOCH-valid-results.txt"
-          IMAGE="logs/$MODEL_PREFIX-epoch$MODEL_EPOCH-valid-confusion_matrix.png"
+          PREDICT_RESULTS_LOG="logs/$MODEL_PREFIX-$(printf "%04d" $MODEL_EPOCH)-valid-results.txt"
+          IMAGE="logs/$MODEL_PREFIX-$(printf "%04d" $MODEL_EPOCH)-valid-confusion_matrix.png"
           python3 util/confusion_matrix.py "$CONFIG_FILE" "$LABELS" "$IMAGE" "$PREDICT_RESULTS_LOG"
 
           if [[ $TEST_SLACK_UPLOAD = 1 ]]; then
@@ -258,8 +258,8 @@ for MODEL in $MODELS; do
         fi
         # Make a classification report from prediction results.
         if [[ $CLASSIFICATION_REPORT_OUTPUT = 1 ]]; then
-          PREDICT_RESULTS_LOG="logs/$MODEL_PREFIX-epoch$MODEL_EPOCH-valid-results.txt"
-          REPORT="logs/$MODEL_PREFIX-epoch$MODEL_EPOCH-valid-classification_report.txt"
+          PREDICT_RESULTS_LOG="logs/$MODEL_PREFIX-$(printf "%04d" $MODEL_EPOCH)-valid-results.txt"
+          REPORT="logs/$MODEL_PREFIX-$(printf "%04d" $MODEL_EPOCH)-valid-classification_report.txt"
           python3 util/classification_report.py "$CONFIG_FILE" "$LABELS" "$PREDICT_RESULTS_LOG" "$REPORT"
           if [[ -e "$REPORT" ]]; then
             print_classification_report "$REPORT"
