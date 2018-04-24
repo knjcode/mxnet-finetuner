@@ -41,7 +41,7 @@ for i in "$TARGET_DIR"/*; do
   c=$(basename "$i")
   echo "processing $c"
   mkdir -p "$OUTPUT_DIR/$c"
-  for j in $(find "$i" -name '*.jpg' | shuffle | head -n "$IMG_NUM"); do
+  for j in $(find "$i" -type f \( -iname "*.png" -or -iname "*.jpg" -or -iname "*.jpeg" \) | shuffle | head -n "$IMG_NUM"); do
     mv "$j" "$OUTPUT_DIR/$c/"
   done
 done
