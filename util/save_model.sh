@@ -107,8 +107,10 @@ find "logs"                          \
   | xargs -I{} cp -i {} "${dst_dir}/logs"
 
 # show tree
-echo "# tree -L 3 ${dst_dir}"
-tree -L 3 "${dst_dir}"
+if which tree >/dev/null; then
+  echo "# tree -L 3 ${dst_dir}"
+  tree -L 3 "${dst_dir}"
+fi
 
 # compress
 if [ "${opt_compress}" == "yes" ]; then

@@ -74,6 +74,11 @@ done
 MODEL_PREFIX="$(date +%Y%m%d%H%M%S)-ensemble"
 python3 util/ensemble.py "$CONFIG_FILE" "$TARGET" "$MODEL_PREFIX"
 
+# save config.yml
+CONFIG_LOG="logs/$MODEL_PREFIX-$TARGET-config.yml"
+cp "$CONFIG_FILE" "$CONFIG_LOG" \
+&& echo "Saved config file to \"$CONFIG_LOG\"" 1>&2
+
 LABELS="model/$MODEL-labels.txt"
 LABELS_TEST="$DATA_DIR/labels.txt"
 

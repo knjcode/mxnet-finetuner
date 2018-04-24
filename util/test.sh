@@ -66,6 +66,11 @@ for CUR_EPOCH in $EPOCHS; do
   # Predict with specified model.
   python3 util/predict.py "$CONFIG_FILE" "$MODEL_IMAGE_SIZE" "test" "$MODEL" "$CUR_EPOCH"
 
+  # save config.yml
+  CONFIG_LOG="logs/$MODEL-$(printf "%04d" $CUR_EPOCH)-test-config.yml"
+  cp "$CONFIG_FILE" "$CONFIG_LOG" \
+  && echo "Saved config file to \"$CONFIG_LOG\"" 1>&2
+
   LABELS="model/$MODEL-labels.txt"
   LABELS_TEST="$DATA_TEST/labels.txt"
 

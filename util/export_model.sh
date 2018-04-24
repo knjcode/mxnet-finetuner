@@ -26,7 +26,7 @@ if [[ $USE_LATEST = 1 ]]; then
 else
   MODEL_AND_EPOCH=$(get_conf "$config"  ".export.model" "")
   if [[ "$MODEL_AND_EPOCH" = "" ]]; then
-    echo 'Error: export.model_prefix in config.yml is empty.' 1>&2
+    echo 'Error: export.model in config.yml is empty.' 1>&2
     exit 1
   fi
   # Get model_prefix and epoch
@@ -77,4 +77,9 @@ generate_export_model_service "$CUR_DIR" "$CENTER_CROP" "$TOP_K" "$service_tmp_d
 
 mxnet-model-export --model-name "$MODEL" --model-path "$export_tmp_dir" --service "$service_tmp_dir/mxnet_finetuner_service.py" \
 && cp $MODEL.model model/ \
-&& echo "Saved models to \"model/$MODEL.model\"" 1>&2
+&& echo "Saved model to \"model/$MODEL.model\"" 1>&2
+
+# save config.yml
+CONFIG_LOG="logs/$MODEL-$(printf "%04d" $EPOCH)-export-config.yml"
+cp "$CONFIG_FILE" "$CONFIG_LOG" \
+&& echo "Saved config file to \"$CONFIG_LOG\"" 1>&2
