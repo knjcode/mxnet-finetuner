@@ -29,6 +29,7 @@ generate_compose() {
   && echo "Generate $dockr_compose_file"
 }
 
+
 update_compose() {
   local cur_dir="$1"
   local DEVICES="$2"
@@ -39,6 +40,7 @@ update_compose() {
   else
     echo "Set use gpu docker image (knjcode/mxnet-finetuner)"
   fi
+  sed -i -e 's/\/usr\/local\/nvidia:roFIX_VOLUME_NAME$//' "$cur_dir/$docker_compose_file"
 }
 
 generate_config() {
