@@ -246,6 +246,11 @@ for MODEL in $MODELS; do
 
         python3 util/predict.py "$CONFIG_FILE" "$MODEL_IMAGE_SIZE" "valid" "$MODEL_PREFIX" "$MODEL_EPOCH"
 
+        # save config.yml
+        CONFIG_LOG="logs/$MODEL_PREFIX-$(printf "%04d" $MODEL_EPOCH)-valid-config.yml"
+        cp "$CONFIG_FILE" "$CONFIG_LOG" \
+        && echo "Saved config file to \"$CONFIG_LOG\"" 1>&2
+
         # Make a confusion matrix from prediction results.
         if [[ $CONFUSION_MATRIX_OUTPUT = 1 ]]; then
           PREDICT_RESULTS_LOG="logs/$MODEL_PREFIX-$(printf "%04d" $MODEL_EPOCH)-valid-results.txt"
