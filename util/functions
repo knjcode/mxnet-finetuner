@@ -25,22 +25,30 @@ version() {
 generate_compose() {
   local cur_dir="$1"
   local docker_compose_file="$2"
-  mo < "$cur_dir/util/compose-template.mo" > "$cur_dir/$docker_compose_file" \
-  && echo "Generate $dockr_compose_file"
+  local nvidia_docker_version="$3"
+  if [[ $nvidia_docker_version = "2" ]]; then
+    mo < "$cur_dir/util/compose-template-nvidia-docker2.mo" > "$cur_dir/$docker_compose_file" \
+    && echo "Generate $dockr_compose_file"
+  else
+    mo < "$cur_dir/util/compose-template.mo" > "$cur_dir/$docker_compose_file" \
+    && echo "Generate $dockr_compose_file"
+  fi
 }
-
 
 update_compose() {
   local cur_dir="$1"
   local DEVICES="$2"
   local docker_compose_file="$3"
-  if [[ "$DEVICES" = "" ]]; then
-    sed -i -e 's/knjcode\/mxnet-finetuner/knjcode\/mxnet-finetuner:cpu/' "$cur_dir/$docker_compose_file" \
-    && echo "Set use cpu docker image (knjcode/mxnet-finetuner:cpu)"
-  else
-    echo "Set use gpu docker image (knjcode/mxnet-finetuner)"
+  local nvidia_docker_version="$4"
+  if [[ $nvidia_docker_version != "2" ]]; then
+    if [[ "$DEVICES" = "" ]]; then
+      sed -i -e 's/knjcode\/mxnet-finetuner/knjcode\/mxnet-finetuner:cpu/' "$cur_dir/$docker_compose_file" \
+      && echo "Set use cpu docker image (knjcode/mxnet-finetuner:cpu)"
+    else
+      echo "Set use gpu docker image (knjcode/mxnet-finetuner)"
+    fi
+    sed -i -e 's/\/usr\/local\/nvidia:roFIX_VOLUME_NAME$//' "$cur_dir/$docker_compose_file"
   fi
-  sed -i -e 's/\/usr\/local\/nvidia:roFIX_VOLUME_NAME$//' "$cur_dir/$docker_compose_file"
 }
 
 generate_config() {

@@ -12,9 +12,9 @@ An all-in-one Deep Learning toolkit for image classification to fine-tuning pret
 
 When using NVIDIA GPUs
 
-- nvidia-docker
+- nvidia-docker (Both version 1.0 and 2.0 are acceptable)
 
-If you have never run the `nvidia-docker` command after installing it, run it at least once to create the volume.
+If you are using nvidia-docker version 1.0 and have never been running the `nvidia-docker` command after installing it, run the following command at least once to create the volume for GPU container.
 
 ```
 $ nvidia-docker run --rm nvidia/cuda nvidia-smi
