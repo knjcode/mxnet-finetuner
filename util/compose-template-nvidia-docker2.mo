@@ -16,3 +16,12 @@ services:
       - "$PWD/model:/mxnet/example/image-classification/model:rw"
       - "$PWD/logs:/mxnet/example/image-classification/logs:rw"
       - "$PWD/classify_example:/mxnet/example/image-classification/classify_example:rw"
+
+  mms:
+    image: awsdeeplearningteam/mms_gpu
+    runtime: nvidia
+    command: "mxnet-model-server start --mms-config /model/mms_app_gpu.conf"
+    ports:
+      - "8080:8080"
+    volumes:
+      - "$PWD/model:/model"

@@ -24,6 +24,23 @@ services:
       - "{{.}}"
       {{/DEVICES}}
     {{/ExistDEV}}
+
+  mms:
+    image: awsdeeplearningteam/mms_gpu
+    command: "mxnet-model-server start --mms-config /model/mms_app_gpu.conf"
+    ports:
+      - "8080:8080"
+    volumes:
+      {{#VOLUMES}}
+      - "{{.}}"
+      {{/VOLUMES}}
+      - "$PWD/model:/model"
+    {{#ExistDEV}}
+    devices:
+      {{#DEVICES}}
+      - "{{.}}"
+      {{/DEVICES}}
+    {{/ExistDEV}}
 {{#VOLUMES}}
 volumes:
   {{.}}FIX_VOLUME_NAME
