@@ -404,6 +404,44 @@ The exported file (extension is .model) is saved at `model/` directory.
 Please check [export settings](#export-settings) for export settings.
 
 
+## Serve your exported model
+
+You can serve your exported model as API server.
+
+With the following command, launch the API server with the last exported model using pre-configured Docker image of [Model Server for Apache MXNet].
+
+```
+$ docker-compose up -d mms
+```
+
+The API server is started at port 8080 of your local host.
+
+Then you will `curl` a `POST` to the MMS predict endpoint with the test image. (For exmple, use `airlane.jpg`).
+
+```
+$ curl -X POST http://127.0.0.1:8080/model/predict -F "data=@airplane.jpg"
+```
+
+The predict endpoint will return a prediction response in JSON. It will look something like the following result:
+
+```
+{
+  "prediction": [
+    [
+      {
+        "class": "airplane",
+        "probability": 0.9950716495513916
+      },
+      {
+        "class": "watch",
+        "probability": 0.004928381647914648
+      }
+    ]
+  ]
+}
+```
+
+
 ## Try image classification with jupyter notebook
 
 ```
@@ -570,6 +608,7 @@ export:
   # top_k: 5  # report the top-k accuracy
   # rgb_mean: '123.68,116.779,103.939'  # a tuple of size 3 for the mean rgb
   # center_crop: 1  # if or not center crop at image preprocessing
+  # endpoint: mms
 ```
 
 
@@ -578,7 +617,8 @@ export:
 - [MXNet]
 - [Mo - Mustache Templates in Bash]
 - [A MXNet implementation of DenseNet with BC structure]
-
+- [SENet.mxnet]
+- [Model Server for Apache MXNet]
 
 # Licnese
 

@@ -44,6 +44,10 @@ update_compose() {
     if [[ "$DEVICES" = "" ]]; then
       sed -i -e 's/knjcode\/mxnet-finetuner/knjcode\/mxnet-finetuner:cpu/' "$cur_dir/$docker_compose_file" \
       && echo "Set use cpu docker image (knjcode/mxnet-finetuner:cpu)"
+      sed -i -e 's/awsdeeplearningteam\/mms_gpu/awsdeeplearningteam\/mms_cpu/' "$cur_dir/$docker_compose_file" \
+      && echo "Set use cpu docker image (awsdeeplearningteam/mms_cpu)"
+      sed -i -e 's/mms_app_gpu.conf/mms_app_cpu.conf/' "$cur_dir/$docker_compose_file" \
+      && echo "Set use cpu config file for mxnet-model-server (model/mms_app_cpu.conf)"
     else
       echo "Set use gpu docker image (knjcode/mxnet-finetuner)"
     fi
@@ -90,6 +94,16 @@ generate_export_model_service() {
     mo < "$cur_dir/export_tmpl/mxnet_vision_service.mo" > "$SERVICE_TMP_DIR/mxnet_finetuner_service.py" \
     && echo "Generate mxnet_finetuner_service.py"
   fi
+}
+
+generate_export_model_conf() {
+  local cur_dir="$1"
+  local MODEL_NAME="$2"
+  local MODEL_FILE="$3"
+  mo < "$cur_dir/export_tmpl/mms_app_cpu.conf.mo" > model/mms_app_cpu.conf \
+  && echo "Saved mms config for cpu \"model/mms_app_cpu.conf\""
+  mo < "$cur_dir/export_tmpl/mms_app_gpu.conf.mo" > model/mms_app_gpu.conf \
+  && echo "Saved mms config for gpu \"model/mms_app_gpu.conf\""
 }
 
 check_from_scratch() {

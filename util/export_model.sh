@@ -19,6 +19,8 @@ TOP_K=$(get_conf "$config"  ".export.top_k" "5")
 RGB_MEAN=$(get_conf "$config" ".export.rgb_mean" "123.68,116.779,103.939")
 CENTER_CROP=$(get_conf "$config"  ".export.center_crop" "1")
 
+MODEL_NAME=$(get_conf "$config" ".export.model_name" "model")
+
 if [[ $USE_LATEST = 1 ]]; then
   # Check latest_result.txt
   MODEL=$(head -n 1 $LATEST_RESULT_LOG)
@@ -72,14 +74,15 @@ cp $SYMBOL_JSON $export_tmp_dir \
 cat $LABELS_TXT | cut -d' ' -f2 > $export_tmp_dir/synset.txt \
 && echo "Use $LABELS_TXT as synset.txt" 1>&2
 
-generate_export_model_signature "$CUR_DIR" "$MODEL_IMAGE_SIZE" "$RGB_MEAN" "$NUM_CLASSES" "$export_tmp_dir"
-generate_export_model_service "$CUR_DIR" "$CENTER_CROP" "$TOP_K" "$service_tmp_dir"
-
-mxnet-model-export --model-name "$MODEL" --model-path "$export_tmp_dir" --service "$service_tmp_dir/mxnet_finetuner_service.py" \
-&& cp $MODEL.model model/ \
-&& echo "Saved model to \"model/$MODEL.model\"" 1>&2
-
 # save config.yml
 CONFIG_LOG="logs/$MODEL-$(printf "%04d" $EPOCH)-export-config.yml"
 cp "$CONFIG_FILE" "$CONFIG_LOG" \
 && echo "Saved config file to \"$CONFIG_LOG\"" 1>&2
+
+generate_export_model_signature "$CUR_DIR" "$MODEL_IMAGE_SIZE" "$RGB_MEAN" "$NUM_CLASSES" "$export_tmp_dir"
+generate_export_model_service "$CUR_DIR" "$CENTER_CROP" "$TOP_K" "$service_tmp_dir"
+generate_export_model_conf "$CUR_DIR" "$MODEL_NAME" "$MODEL.model"
+
+mxnet-model-export --model-name "$MODEL" --model-path "$export_tmp_dir" --service "$service_tmp_dir/mxnet_finetuner_service.py" \
+&& cp $MODEL.model model/ \
+&& echo "Saved model to \"model/$MODEL.model\"" 1>&2
