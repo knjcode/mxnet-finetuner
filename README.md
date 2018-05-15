@@ -179,6 +179,8 @@ Predict result and classification report and/or confusion matrix are save at `lo
 |ResNet-50                      |imagenet1k-resnet-50             |
 |ResNet-152                     |imagenet1k-resnet-152            |
 |Inception-v3                   |imagenet1k-inception-v3          |
+|DenseNet-169                   |imagenet1k-densenet-169          |
+|SE-ResNeXt-50                  |imagenet1k-se-resnext-50         |
 
 To use these pretrained models, specify the following pretrained model name in `config.yml`.
 
@@ -335,24 +337,6 @@ finetune:
 ```
 
 For details, please check [Available models training from scratch](docs/train_from_scratch.md)
-
-
-### Use DenseNet
-
-ImageNet pretrained DenseNet-169 model is introduced on [A MXNet implementation of DenseNet with BC structure].
-
-You can use this model.
-
-For details, please check [Use DenseNet](docs/use_densenet.md)
-
-
-### Use SE-ResNeXt
-
-ImageNet pretrained SE-ResNeXt-50 model is introduced on [SENet.mxnet].
-
-You can use this model as below
-
-For details, please check [Use SE-ResNeXt](docs/use_se_resnext.md)
 
 
 ## Averaging ensemble test with trained models
@@ -627,11 +611,8 @@ export:
 
 [Apache-2.0]: https://github.com/dmlc/mxnet/blob/master/LICENSE
 [MXNet]: https://github.com/apache/incubator-mxnet
-[MXNet - Image Classification - Pre-trained Models]: https://github.com/apache/incubator-mxnet/tree/master/example/image-classification#pre-trained-models
 [Mo - Mustache Templates in Bash]: https://github.com/tests-always-included/mo
 [A MXNet implementation of DenseNet with BC structure]: https://github.com/bruinxiong/densenet.mxnet
-[MXNet model gallery]: https://github.com/dmlc/mxnet-model-gallery
-[Reproduce ResNet-v2 using MXNet]: https://github.com/tornadomeet/ResNet
 [Caltech 101]: http://www.vision.caltech.edu/Image_Datasets/Caltech101/
 [SENet.mxnet]: https://github.com/bruinxiong/SENet.mxnet
 [Model Server for Apache MXNet]: https://github.com/awslabs/mxnet-model-server
