@@ -5,6 +5,8 @@ Classification accuracy of available pretrained models.
 
 *Please note that the following results are calculated with different datasets.*
 - ResNet accuracy from [Reproduce ResNet-v2 using MXNet]
+- DenseNet-169 accuracy from [A MXNet implementation of DenseNet with BC structure]
+- SE-ResNeXt-50 accuracy from [SENet.mxnet]
 - Other accuracy from [MXNet model gallery] and [MXNet - Image Classification - Pre-trained Models]
 
 |model                          |Top-1 Accuracy|Top-5 Accuracy|download size|model size (MXNet)|dataset    |image shape|
@@ -28,6 +30,8 @@ Classification accuracy of available pretrained models.
 |ResNet-152 (imagenet11k)       |41.6%         |-             |311MB        |223MB             |ImageNet11K|224x224    |
 |ResNet-50 (Place365 Challenge) |31.1%         |-             |181MB        |90MB              |Place365ch |224x224    |
 |ResNet-152 (Place365 Challenge)|33.6%         |-             |313MB        |223MB             |Place365ch |224x224    |
+|DenseNet-169                   |75.3%         |92.8%         |55MB         |48MB              |ImageNet1K |224x224    |
+|SE-ResNeXt-50                  |76.7%         |93.4%         |103MB        |95MB              |ImageNet1K |224x224    |
 
 - The `download size` is the file size when first downloading pretrained model.
 - The `model size` is the file size to be saved after fine-tuning.
@@ -56,3 +60,12 @@ To use these pretrained models, specify the following pretrained model name in `
 |ResNeXt-101-64x4d              |imagenet1k-resnext-101-64x4d     |
 |ResNet-50 (Place365 Challenge) |imagenet11k-place365ch-resnet-50 |
 |ResNet-152 (Place365 Challenge)|imagenet11k-place365ch-resnet-152|
+|DenseNet-169                   |imagenet1k-densenet-169          |
+|SE-ResNeXt-50                  |imagenet1k-se-resnext-50         |
+
+
+[Reproduce ResNet-v2 using MXNet]: https://github.com/tornadomeet/ResNet
+[A MXNet implementation of DenseNet with BC structure]: https://github.com/bruinxiong/densenet.mxnet
+[SENet.mxnet]: https://github.com/bruinxiong/SENet.mxnet
+[MXNet model gallery]: https://github.com/dmlc/mxnet-model-gallery
+[MXNet - Image Classification - Pre-trained Models]: https://github.com/apache/incubator-mxnet/tree/master/example/image-classification#pre-trained-models

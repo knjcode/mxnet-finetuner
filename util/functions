@@ -275,6 +275,39 @@ check_inception_v3_model() {
   fi
 }
 
+gdrive_download () {
+  local FILEID="$1"
+  local FILENAME="$2"
+  CONFIRM=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate \
+  "https://docs.google.com/uc?export=download&id=$1" -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')
+  wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$CONFIRM&id=$1" -O $2
+  rm -rf /tmp/cookies.txt
+}
+
+download_se_resnext_50_model() {
+  gdrive_download "0B_M7XF_l0CzXOHNybXVWLWZteEE" "model/imagenet1k-se-resnext-50-0000.params"
+  wget "https://raw.githubusercontent.com/bruinxiong/SENet.mxnet/master/se-resnext-imagenet-50-0-symbol.json" \
+  -O "model/imagenet1k-se-resnext-50-symbol.json"
+}
+
+check_se_resnext_50_model() {
+  if [ ! -e "/mxnet/example/image-classification/model/imagenet1k-se-resnext-50-0000.params" ]; then
+    download_se_resnext_50_model
+  fi
+}
+
+download_densenet_169_model() {
+  gdrive_download "0B_M7XF_l0CzXX3V3WXJoUnNKZFE" "model/imagenet1k-densenet-169-0000.params"
+  wget "https://raw.githubusercontent.com/bruinxiong/densenet.mxnet/master/densenet-imagenet-169-0-symbol.json" \
+  -O "model/imagenet1k-densenet-169-symbol.json"
+}
+
+check_densenet_169_model() {
+  if [ ! -e "/mxnet/example/image-classification/model/imagenet1k-densenet-169-0000.params" ]; then
+    download_densenet_169_model
+  fi
+}
+
 get_layer_before_fullc() {
   local MODEL="$1"
   if [[ $MODEL = *caffenet* ]]; then
@@ -292,10 +325,14 @@ get_layer_before_fullc() {
     LAYER_BEFORE_FULLC="flatten"
   elif [[ $MODEL = *resnet* ]]; then
     LAYER_BEFORE_FULLC="flatten0"
+  elif [[ $MODEL = *se-resnext-50* ]]; then
+    LAYER_BEFORE_FULLC="flatten0"
+    check_se_resnext_50_model
   elif [[ $MODEL = *resnext* ]]; then
     LAYER_BEFORE_FULLC="flatten0"
   elif [[ $MODEL = *densenet* ]]; then
     LAYER_BEFORE_FULLC="flatten0"
+    check_densenet_169_model
   else
     LAYER_BEFORE_FULLC="flatten_0"
   fi
