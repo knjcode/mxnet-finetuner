@@ -7,7 +7,7 @@ common:
 
 # train, validation and test RecordIO data generation settings
 data:
-  quality: 95
+  quality: 100
   shuffle: 1
   center_crop: 0
   # test_center_crop: 1
@@ -22,10 +22,11 @@ finetune:
     # - imagenet1k-resnet-50
     # - imagenet11k-resnet-152
     # - imagenet1k-resnext-101
+    # - imagenet1k-se-resnext-50
     # etc
   optimizers:  # specify optimizers to use
     - sgd
-    # optimizers: sgd, dcasgd, nag, sgld, adam, adagrad, rmsprop, adadelta, ftrl, adamax, nadam
+    # optimizers: sgd, nag, rmsprop, adam, adagrad, adadelta, adamax, nadam, dcasgd, signum, etc.
   # num_active_layers: 1  # train last n-layers without last fully-connected layer
   num_epochs: 10  # max num of epochs
   # load_epoch: 0  # specify when using user fine-tuned model
@@ -80,7 +81,7 @@ test:
 export:
   use_latest: 1 # Use last trained model. If set this option, model is ignored
   # model: 201705292200-imagenet1k-nin-sgd-0001
-  # top_k: 5  # report the top-k accuracy
+  # top_k: 10  # report the top-k accuracy
   # rgb_mean: '123.68,116.779,103.939'  # a tuple of size 3 for the mean rgb
   # center_crop: 1  # if or not center crop at image preprocessing
   # model_name: model
