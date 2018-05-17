@@ -15,7 +15,7 @@ DATA_TRAIN="/data/train"
 LATEST_RESULT_LOG="logs/latest_result.txt"
 
 USE_LATEST=$(get_conf "$config"  ".export.use_latest" "1")
-TOP_K=$(get_conf "$config"  ".export.top_k" "5")
+TOP_K=$(get_conf "$config"  ".export.top_k" "10")
 RGB_MEAN=$(get_conf "$config" ".export.rgb_mean" "123.68,116.779,103.939")
 CENTER_CROP=$(get_conf "$config"  ".export.center_crop" "1")
 

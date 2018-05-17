@@ -84,7 +84,7 @@ common:
   gpus: 0
 
 data:
-  quality: 95
+  quality: 100
   shuffle: 1
   center_crop: 0
 
@@ -190,16 +190,18 @@ For details, please check [Available pretrained models](docs/pretrained_models.m
 ## Available optimizers
 
 - SGD
-- DCASGD
 - NAG
-- SGLD
+- RMSProp
 - Adam
 - AdaGrad
-- RMSProp
 - AdaDelta
-- Ftrl
 - Adamax
 - Nadam
+- DCASGD
+- SGLD
+- Signum
+- FTML
+- Ftrl
 
 To use these optimizers, specify the optimizer name in lowercase in `config.yml`.
 
@@ -468,7 +470,7 @@ If `resize_short` is not specified, it is automatically determined according to 
 
 ```
 data:
-  quality: 95
+  quality: 100
   shuffle: 1
   center_crop: 0
   # test_center_crop: 1
@@ -486,10 +488,11 @@ finetune:
     # - imagenet1k-resnet-50
     # - imagenet11k-resnet-152
     # - imagenet1k-resnext-101
+    # - imagenet1k-se-resnext-50
     # etc
   optimizers:  # specify optimizers to use
     - sgd
-    # optimizers: sgd, dcasgd, nag, sgld, adam, adagrad, rmsprop, adadelta, ftrl, adamax, nadam
+    # optimizers: sgd, nag, rmsprop, adam, adagrad, adadelta, adamax, nadam, dcasgd, signum, etc.
   # num_active_layers: 1  # train last n-layers without last fully-connected layer
   num_epochs: 10  # max num of epochs
   # load_epoch: 0  # specify when using user fine-tuned model
@@ -589,10 +592,10 @@ ensemble:
 export:
   use_latest: 1 # Use last trained model. If set this option, model is ignored
   model: 201705292200-imagenet1k-nin-sgd-0001
-  # top_k: 5  # report the top-k accuracy
+  # top_k: 10  # report the top-k accuracy
   # rgb_mean: '123.68,116.779,103.939'  # a tuple of size 3 for the mean rgb
   # center_crop: 1  # if or not center crop at image preprocessing
-  # endpoint: mms
+  # model_name: model
 ```
 
 

@@ -26,7 +26,7 @@ mkdir -p $DATA_TRAIN $DATA_VALID
 
 NUM_THREAD=$(get_conf "$config" ".common.num_threads" "4")
 TRAIN_RATIO=$(get_conf "$config" ".data.train_ratio" "1")
-QUALITY=$(get_conf "$config" ".data.quality" "95")
+QUALITY=$(get_conf "$config" ".data.quality" "100")
 SHUFFLE=$(get_conf "$config" ".data.shuffle" "1")
 CENTER_CROP=$(get_conf "$config" ".data.center_crop" "0")
 
