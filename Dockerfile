@@ -36,12 +36,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   && rm -rf /var/lib/apt/lists/*
 
 ENV BUILD_OPTS "USE_CUDA=1 USE_CUDA_PATH=/usr/local/cuda USE_CUDNN=1"
-RUN git clone --recursive https://github.com/apache/incubator-mxnet.git mxnet --branch 1.1.0 \
+RUN git clone --recursive https://github.com/apache/incubator-mxnet.git mxnet --branch 1.2.0 \
   && cd mxnet \
   && make -j$(nproc) $BUILD_OPTS \
   && rm -r build
-
-RUN pip3 install nose pylint numpy nose-timer requests tqdm
 
 RUN wget --quiet https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 \
   && chmod +x jq-linux64 \
@@ -52,21 +50,28 @@ RUN pip3 install \
   awscli \
   jupyter \
   matplotlib \
+  nose \
+  nose-timer \
+  numpy \
   opencv-python \
   pandas \
   pandas_ml \
+  Pillow \
+  pylint \
   pyyaml \
+  requests \
   seaborn \
   sklearn-pandas \
-  slackclient
+  slackclient \
+  tqdm
 
 # install compiled mxnet
-RUN cd mxnet/python && pip install -e .
+RUN cd mxnet/python && pip3 install -e .
 
 # install mxnet-model-server
 RUN git clone https://github.com/awslabs/mxnet-model-server.git --branch v0.2.0 \
   && cd mxnet-model-server \
-  && pip install -e .
+  && pip3 install -e .
 
 RUN locale-gen en_US.UTF-8
 ENV LANG en_US.UTF-8
@@ -78,7 +83,6 @@ WORKDIR /mxnet/example/image-classification
 
 COPY common /mxnet/example/image-classification/common/
 COPY util /mxnet/example/image-classification/util/
-COPY util/inception-resnet-v2.py /mxnet/example/image-classification/symbols/
 COPY docker-entrypoint.sh .
 
 ENTRYPOINT ["./docker-entrypoint.sh"]
