@@ -7,6 +7,7 @@ common:
 
 # train, validation and test RecordIO data generation settings
 data:
+  train_ratio: 1
   quality: 100
   shuffle: 1
   center_crop: 0
