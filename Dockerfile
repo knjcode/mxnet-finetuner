@@ -1,4 +1,4 @@
-FROM nvidia/cuda:9.0-cudnn7-devel
+FROM ubuntu:xenial
 
 RUN apt-get update \
   && apt-get upgrade -y \
@@ -62,7 +62,7 @@ RUN git clone https://github.com/awslabs/mxnet-model-server.git --branch v0.4.0 
   && pip3 install -e .
 
 RUN pip3 uninstall -y mxnet
-RUN pip3 install mxnet-cu90==1.2.1.post1
+RUN pip3 install mxnet-mkl==1.2.1
 
 RUN locale-gen en_US.UTF-8
 ENV LANG en_US.UTF-8
