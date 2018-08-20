@@ -36,7 +36,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   && rm -rf /var/lib/apt/lists/*
 
 ENV BUILD_OPTS "USE_CUDA=1 USE_CUDA_PATH=/usr/local/cuda USE_CUDNN=1"
-RUN git clone --recursive https://github.com/apache/incubator-mxnet.git mxnet --branch 1.2.0 \
+RUN git clone --recursive https://github.com/apache/incubator-mxnet.git mxnet --branch 1.2.1 \
   && cd mxnet \
   && make -j$(nproc) $BUILD_OPTS \
   && rm -r build
@@ -65,13 +65,13 @@ RUN pip3 install \
   slackclient \
   tqdm
 
-# install compiled mxnet
-RUN cd mxnet/python && pip3 install -e .
-
 # install mxnet-model-server
 RUN git clone https://github.com/awslabs/mxnet-model-server.git --branch v0.2.0 \
   && cd mxnet-model-server \
   && pip3 install -e .
+
+# install compiled mxnet
+RUN cd mxnet/python && pip3 install -e .
 
 RUN locale-gen en_US.UTF-8
 ENV LANG en_US.UTF-8
