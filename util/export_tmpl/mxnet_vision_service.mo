@@ -27,10 +27,18 @@ class MXNetVisionService(MXNetBaseService):
         img_list = []
         for idx, img in enumerate(data):
             input_shape = self.signature['inputs'][idx]['data_shape']
+            try:
+                rgb_mean = self.signature['inputs'][idx]['rgb_mean']
+                rgb_std = self.signature['inputs'][idx]['rgb_std']
+            except KeyError:
+                rgb_mean = None
+                rgb_std = None
             # We are assuming input shape is NCHW
             [h, w] = input_shape[2:]
             img_arr = image.read(img)
             img_arr = image.resize(img_arr, w, h)
+            if rgb_mean:
+                img_arr = image.color_normalize(img_arr, mx.nd.array(rgb_mean), std=rgb_std)
             img_arr = image.transform_shape(img_arr)
             img_list.append(img_arr)
         return img_list

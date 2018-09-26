@@ -36,7 +36,9 @@ try:
     batch_size = config['ensemble'].get('ensemble_batch_size', 10)
     top_k = config['ensemble'].get('top_k', 10)
     rgb_mean = config['ensemble'].get('rgb_mean', '123.68,116.779,103.939')
-    rgb_mean = [mean for mean in rgb_mean.split(',')]
+    rgb_mean = [float(mean) for mean in rgb_mean.split(',')]
+    rgb_std = config['ensemble'].get('rgb_std', '1,1,1')
+    rgb_std = [float(std) for std in rgb_std.split(',')]
 except AttributeError:
     print('Error: Missing ensemble section at config.yml')
     sys.exit(1)
@@ -84,6 +86,9 @@ def load_image_record(imgrec, batch_size, data_shape):
         mean_r              = rgb_mean[0],
         mean_g              = rgb_mean[1],
         mean_b              = rgb_mean[2],
+        std_r               = rgb_std[0],
+        std_g               = rgb_std[1],
+        std_b               = rgb_std[2],
         data_name           = 'data',
         label_name          = 'softmax_label',
         batch_size          = batch_size,

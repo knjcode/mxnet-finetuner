@@ -59,11 +59,22 @@ MAX_RANDOM_H=$(get_conf "$config" ".finetune.max_random_h" "0")
 MAX_RANDOM_S=$(get_conf "$config" ".finetune.max_random_s" "0")
 MAX_RANDOM_L=$(get_conf "$config" ".finetune.max_random_l" "0")
 MAX_RANDOM_ASPECT_RATIO=$(get_conf "$config" ".finetune.max_random_aspect_ratio" "0")
+MIN_RANDOM_ASPECT_RATIO=$(get_conf "$config" ".finetune.min_random_aspect_ratio" "0")
 MAX_RANDOM_ROTATE_ANGLE=$(get_conf "$config" ".finetune.max_random_rotate_angle" "0")
 MAX_RANDOM_SHEAR_RATIO=$(get_conf "$config" ".finetune.max_random_shear_ratio" "0")
 MAX_RANDOM_SCALE=$(get_conf "$config" ".finetune.max_random_scale" "1")
 MIN_RANDOM_SCALE=$(get_conf "$config" ".finetune.min_random_scale" "1")
+MAX_RANDOM_AREA=$(get_conf "$config" ".finetune.max_random_area" "1")
+MIN_RANDOM_AREA=$(get_conf "$config" ".finetune.min_random_area" "1")
+MAX_CROP_SIZE=$(get_conf "$config" ".finetune.max_crop_size" "-1")
+MIN_CROP_SIZE=$(get_conf "$config" ".finetune.min_crop_size" "-1")
+BRIGHTNESS=$(get_conf "$config" ".finetune.brightness" "0")
+CONTRAST=$(get_conf "$config" ".finetune.contrast" "0")
+SATURATION=$(get_conf "$config" ".finetune.saturation" "0")
+PCA_NOISE=$(get_conf "$config" ".finetune.pca_noise" "0")
+RANDOM_RESIZED_CROP=$(get_conf "$config" ".finetune.random_resized_crop" "0")
 RGB_MEAN=$(get_conf "$config" ".finetune.rgb_mean" "123.68,116.779,103.939")
+RGB_STD=$(get_conf "$config" ".finetune.rgb_std" "1,1,1")
 MONITOR=$(get_conf "$config" ".finetune.monitor" "0")
 PAD_SIZE=$(get_conf "$config" ".finetune.pad_size" "0")
 NUM_ACTIVE_LAYERS=$(get_conf "$config" ".finetune.num_active_layers" "0")
@@ -218,11 +229,22 @@ for MODEL in $MODELS; do
     --max-random-s "$MAX_RANDOM_S" \
     --max-random-l "$MAX_RANDOM_L" \
     --max-random-aspect-ratio "$MAX_RANDOM_ASPECT_RATIO" \
+    --min-random-aspect-ratio "$MIN_RANDOM_ASPECT_RATIO" \
     --max-random-rotate-angle "$MAX_RANDOM_ROTATE_ANGLE" \
     --max-random-shear-ratio "$MAX_RANDOM_SHEAR_RATIO" \
     --max-random-scale "$MAX_RANDOM_SCALE" \
     --min-random-scale "$MIN_RANDOM_SCALE" \
+    --max-random-area "$MAX_RANDOM_AREA" \
+    --min-random-area "$MIN_RANDOM_AREA" \
+    --max-crop-size "$MAX_CROP_SIZE" \
+    --min-crop-size "$MIN_CROP_SIZE" \
+    --brightness "$BRIGHTNESS" \
+    --contrast "$CONTRAST" \
+    --saturation "$SATURATION" \
+    --pca-noise "$PCA_NOISE" \
+    --random-resized-crop "$RANDOM_RESIZED_CROP" \
     --rgb-mean "$RGB_MEAN" \
+    --rgb-std "$RGB_STD" \
     --monitor "$MONITOR" \
     --pad-size "$PAD_SIZE" \
     --image-shape "$IMAGE_SHAPE" \
