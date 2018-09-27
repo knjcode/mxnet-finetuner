@@ -60,6 +60,12 @@ finetune:
   # train_accuracy_graph_slack_upload: 1
   # train_accuracy_graph_slack_channels:
   #   - general
+  train_loss_graph_output: 1
+  # train_loss_graph_fontsize: 12
+  # train_loss_graph_figsize: 8,6
+  # train_loss_graph_slack_upload: 1
+  # train_loss_graph_slack_channels:
+  #   - general
 
 # test settings
 test:

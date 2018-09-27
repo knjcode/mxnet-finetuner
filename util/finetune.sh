@@ -51,6 +51,7 @@ WD=$(get_conf "$config" ".finetune.wd" "0.00001")
 BATCH_SIZE=$(get_conf "$config" ".finetune.batch_size" "16")
 DISP_BATCHES=$(get_conf "$config" ".finetune.disp_batches" "20")
 TOP_K=$(get_conf "$config" ".finetune.top_k" "0")
+LOSS=$(get_conf "$config" ".finetune.loss" "ce")
 DATA_AUG_LEVEL=$(get_conf "$config" ".finetune.data_aug_level" "0")
 RANDOM_CROP=$(get_conf "$config" ".finetune.random_crop" "0")
 RANDOM_MIRROR=$(get_conf "$config" ".finetune.random_mirror" "0")
@@ -68,8 +69,11 @@ PAD_SIZE=$(get_conf "$config" ".finetune.pad_size" "0")
 NUM_ACTIVE_LAYERS=$(get_conf "$config" ".finetune.num_active_layers" "0")
 AUTO_TEST=$(get_conf "$config" ".finetune.auto_test" "1")
 TRAIN_ACCURACY_GRAPH_OUTPUT=$(get_conf "$config" ".finetune.train_accuracy_graph_output" "1")
-TRAIN_SLACK_UPLOAD=$(get_conf "$config" ".finetune.train_accuracy_graph_slack_upload" "0")
-TRAIN_SLACK_CHANNELS=$(get_conf_array "$config" ".finetune.train_accuracy_graph_slack_channels" "general")
+TRAIN_ACCURACY_SLACK_UPLOAD=$(get_conf "$config" ".finetune.train_accuracy_graph_slack_upload" "0")
+TRAIN_ACCURACY_SLACK_CHANNELS=$(get_conf_array "$config" ".finetune.train_accuracy_graph_slack_channels" "general")
+TRAIN_LOSS_GRAPH_OUTPUT=$(get_conf "$config" ".finetune.train_loss_graph_output" "1")
+TRAIN_LOSS_SLACK_UPLOAD=$(get_conf "$config" ".finetune.train_loss_graph_slack_upload" "0")
+TRAIN_LOSS_SLACK_CHANNELS=$(get_conf_array "$config" ".finetune.train_loss_graph_slack_channels" "general")
 
 CONFUSION_MATRIX_OUTPUT=$(get_conf "$config" ".test.confusion_matrix_output" "1")
 TEST_SLACK_UPLOAD=$(get_conf "$config" ".test.confusion_matrix_slack_upload" "0")
@@ -206,6 +210,7 @@ for MODEL in $MODELS; do
     --batch-size "$BATCH_SIZE" \
     --disp-batches "$DISP_BATCHES" \
     --top-k "$TOP_K" \
+    --loss "$LOSS" \
     --data-nthreads "$DATA_NTHREADS" \
     --random-crop "$RANDOM_CROP" \
     --random-mirror "$RANDOM_MIRROR" \
@@ -233,10 +238,18 @@ for MODEL in $MODELS; do
       echo "$MODEL_EPOCH" >> logs/latest_result.txt
 
       if [[ $TRAIN_ACCURACY_GRAPH_OUTPUT = 1 ]]; then
-        IMAGE="logs/$MODEL_PREFIX-train_accuracy.png"
-        python3 util/train_accuracy.py "$CONFIG_FILE" "$IMAGE" "$LOGS"
-        if [[ $TRAIN_SLACK_UPLOAD = 1 ]]; then
-          python3 util/slack_file_upload.py "$TRAIN_SLACK_CHANNELS" "$IMAGE"
+        TRAIN_ACCURACY_IMAGE="logs/$MODEL_PREFIX-train_accuracy.png"
+        python3 util/train_accuracy.py "$CONFIG_FILE" "$TRAIN_ACCURACY_IMAGE" "$LOGS"
+        if [[ $TRAIN_ACCURACY_SLACK_UPLOAD = 1 ]]; then
+          python3 util/slack_file_upload.py "$TRAIN_SLACK_CHANNELS" "$TRAIN_ACCURACY_IMAGE"
+        fi
+      fi
+
+      if [[ $TRAIN_LOSS_GRAPH_OUTPUT = 1 ]]; then
+        TRAIN_LOSS_IMAGE="logs/$MODEL_PREFIX-train_loss.png"
+        python3 util/train_loss.py "$CONFIG_FILE" "$TRAIN_LOSS_IMAGE" "$LOGS"
+        if [[ $TRAIN_LOSS_SLACK_UPLOAD = 1 ]]; then
+          python3 util/slack_file_upload.py "$TRAIN_SLACK_CHANNELS" "$TRAIN_LOSS_IMAGE"
         fi
       fi
 
