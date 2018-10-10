@@ -343,8 +343,9 @@ print_classification_report() {
   local report="$1"
   local body
 
-  body=$(cat "$report" | tail -n +4 | \
-        sed -e 's/precision/a precision/' -e 's/avg \/ total/avg\/total/' | \
-        column -t | sed -e 's/^a /  /' | sed -e '2i \ ' | sed -e '$ i \ ')
+  body=$(cat "$report" | tail -n +4)
+  # body=$(cat "$report" | tail -n +4 | \
+  #       sed -e 's/precision/a precision/' -e 's/avg \/ total/avg\/total/' | \
+  #       column -t | sed -e 's/^a /  /' | sed -e '2i \ ' | sed -e '$ i \ ')
   echo "$body"
 }
