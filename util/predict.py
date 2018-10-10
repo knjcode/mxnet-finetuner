@@ -112,7 +112,7 @@ def make_predict_results(imgrec, batch_size, data_shape, imglst, labels_txt, res
     test_rec = load_image_record(imgrec, batch_size, data_shape)
 
     with open(imglst) as lst:
-        test_list = [(l.split('\t')[1].strip(), l.split('\t')[2].strip()) for l in lst.readlines()]
+        test_list = [(l.split('\t')[1].strip(), l.split('\t')[2].strip().replace(' ', '_')) for l in lst.readlines()]
 
     with open(labels_txt) as syn:
         labels = [l.split(' ')[-1].strip() for l in syn.readlines()]
