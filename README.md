@@ -117,11 +117,11 @@ mxnet-finetuner will automatically execute the followings according to `config.y
 - Replace the last fully-connected layer with a new one that outputs the desired number of classes
 - Data augumentaion
 - Do Fine-tuning
-- Make training accuracy graph
+- Make training accuracy/loss graph
 - Make confusion matrix
-- Upload training accuracy graph and confusion matrix to Slack
+- Upload training accuracy/loss graph and confusion matrix to Slack
 
-Training accuracy graph and/or confusion matrix are save at `logs/` directory.  
+Training accuracy/loss graph and/or confusion matrix are save at `logs/` directory.  
 Trained models are save at `model/` directory.
 
 Trained models are saved with the following file name for each epoch.
@@ -133,6 +133,7 @@ If you want to upload results to Slack, set `SLACK_API_TOKEN` environment variab
 ```
 finetune:
   train_accuracy_graph_slack_upload: 1
+  train_loss_graph_slack_upload: 1
 test:
   confusion_matrix_slack_upload: 1
 ```
@@ -524,6 +525,12 @@ finetune:
   # train_accuracy_graph_figsize: 8,6
   # train_accuracy_graph_slack_upload: 1
   # train_accuracy_graph_slack_channels:
+  #   - general
+  train_loss_graph_output: 1
+  # train_loss_graph_fontsize: 12
+  # train_loss_graph_figsize: 8,6
+  # train_loss_graph_slack_upload: 1
+  # train_loss_graph_slack_channels:
   #   - general
 ```
 
