@@ -28,9 +28,8 @@ optional
 --bind
 unix:/tmp/mms_app.sock
 
-###Number of Gunicorn workers optimised for p3.8xlarge instance ##########
 --workers
-optional
+1
 
 
 --worker-class
