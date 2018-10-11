@@ -25,9 +25,8 @@ optional
 --bind
 unix:/tmp/mms_app.sock
 
-###number of workers optimised for c5.2xlarge ec2 instance##
 --workers
-optional
+1
 
 --worker-class
 gevent
