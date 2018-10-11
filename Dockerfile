@@ -1,4 +1,4 @@
-FROM nvidia/cuda:9.0-devel
+FROM nvidia/cuda:9.0-cudnn7-devel
 
 RUN apt-get update \
   && apt-get upgrade -y \
@@ -27,20 +27,6 @@ RUN apt-get update \
 RUN cd /usr/src/gtest && cmake CMakeLists.txt && make && cp *.a /usr/lib && \
     cd /tmp && wget https://bootstrap.pypa.io/get-pip.py && python3 get-pip.py
 
-# install libcudnn 7.0.4.31
-ENV CUDNN_VERSION 7.0.4.31
-LABEL com.nvidia.cudnn.version="${CUDNN_VERSION}"
-RUN apt-get update && apt-get install -y --no-install-recommends \
-            libcudnn7=$CUDNN_VERSION-1+cuda9.0 \
-            libcudnn7-dev=$CUDNN_VERSION-1+cuda9.0 \
-  && rm -rf /var/lib/apt/lists/*
-
-ENV BUILD_OPTS "USE_CUDA=1 USE_CUDA_PATH=/usr/local/cuda USE_CUDNN=1"
-RUN git clone --recursive https://github.com/apache/incubator-mxnet.git mxnet --branch 1.2.1 \
-  && cd mxnet \
-  && make -j$(nproc) $BUILD_OPTS \
-  && rm -r build
-
 RUN wget --quiet https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 \
   && chmod +x jq-linux64 \
   && mv jq-linux64 /usr/bin/jq
@@ -65,13 +51,18 @@ RUN pip3 install \
   slackclient \
   tqdm
 
+RUN git clone https://github.com/apache/incubator-mxnet.git mxnet --branch 1.3.0 \
+  && cd mxnet \
+  && git config user.email "knjcode@gmail.com" \
+  && git cherry-pick ceabcaac77543d99246415b2fb2d8c973a830453
+
 # install mxnet-model-server
-RUN git clone https://github.com/awslabs/mxnet-model-server.git --branch v0.2.0 \
+RUN git clone https://github.com/awslabs/mxnet-model-server.git --branch v0.4.0 \
   && cd mxnet-model-server \
   && pip3 install -e .
 
-# install compiled mxnet
-RUN cd mxnet/python && pip3 install -e .
+RUN pip3 uninstall -y mxnet
+RUN pip3 install mxnet-cu90==1.2.1.post1
 
 RUN locale-gen en_US.UTF-8
 ENV LANG en_US.UTF-8
