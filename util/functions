@@ -76,8 +76,9 @@ generate_export_model_signature() {
   local cur_dir="$1"
   local MODEL_IMAGE_SIZE="$2"
   local RGB_MEAN="$3"
-  local NUM_CLASSES="$4"
-  local EXPORT_TMP_DIR="$5"
+  local RGB_STD="$4"
+  local NUM_CLASSES="$5"
+  local EXPORT_TMP_DIR="$6"
   mo < "$cur_dir/export_tmpl/signature.mo" > "$EXPORT_TMP_DIR/signature.json" \
   && echo "Generate signature.json"
 }

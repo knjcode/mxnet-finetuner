@@ -7,12 +7,12 @@ common:
 
 # train, validation and test RecordIO data generation settings
 data:
-  train_ratio: 1
   quality: 100
   shuffle: 1
   center_crop: 0
   # test_center_crop: 1
   # resize_short: 256
+  # train_ratio: 1.0
 
 # finetune settings
 finetune:
@@ -35,7 +35,7 @@ finetune:
   lr_factor: 0.1  # the ratio to reduce lr on each step
   lr_step_epochs: 10  # the epochs to reduce the lr, e.g. 30,60
   mom: 0.9  # momentum for sgd
-  wd: 0.00001  # weight decay for sgd
+  wd: 0.0001  # weight decay for sgd
   batch_size: 10  # the batch size
   disp_batches: 10  # show progress for every n batches
   # top_k: 0  # report the top-k accuracy. 0 means no report.
@@ -45,12 +45,23 @@ finetune:
   # max_random_h: 0  # max change of hue, whose range is [0, 180]
   # max_random_s: 0  # max change of saturation, whose range is [0, 255]
   # max_random_l: 0  # max change of intensity, whose range is [0, 255]
-  # max_random_aspect_ratio: 0  # max change of aspect ratio, whose range is [0, 1]
+  # max_random_aspect_ratio: 0  # max value of aspect ratio.
+  # min_random_aspect_ratio: 0  # min value of aspect ratio, whose value is either None or a positive value.
   # max_random_rotate_angle: 0  # max angle to rotate, whose range is [0, 360]
   # max_random_shear_ratio: 0  # max ratio to shear, whose range is [0, 1]
   # max_random_scale: 1  # max ratio to scale
   # min_random_scale: 1  # min ratio to scale, should >= img_size/input_shape. otherwise use --pad-size
+  # max_random_area: 1  # max area to crop in random resized crop, whose range is [0, 1]
+  # min_random_area: 1  # min area to crop in random resized crop, whose range is [0, 1]
+  # max_crop_size: -1  # Crop both width and height into a random size in [min_crop_size, max_crop_size]
+  # min_crop_size: -1  # Crop both width and height into a random size in [min_crop_size, max_crop_size]
+  # brightness: 0  # brightness jittering, whose range is [0, 1]
+  # contrast: 0  # contrast jittering, whose range is [0, 1]
+  # saturation: 0  # saturation jittering, whose range is [0, 1]
+  # pca_noise: 0  # pca noise, whose range is [0, 1]
+  # random_resized_crop: 0  # whether to use random resized crop
   # rgb_mean: '123.68,116.779,103.939'  # a tuple of size 3 for the mean rgb
+  # rgb_std: '1,1,1'  # a tuple of size 3 for the std rgb
   # monitor: 0  # log network parameters every N iters if larger than 0
   # pad_size: 0  # padding the input image
   auto_test: 1  # if or not test with validation data after fine-tuneing is completed
@@ -75,6 +86,7 @@ test:
   test_batch_size: 10
   # top_k: 10
   # rgb_mean: '123.68,116.779,103.939'  # a tuple of size 3 for the mean rgb
+  # rgb_std: '1,1,1'  # a tuple of size 3 for the std rgb
   classification_report_output: 1
   # classification_report_digits: 3
   confusion_matrix_output: 1
@@ -90,6 +102,7 @@ export:
   # model: 201705292200-imagenet1k-nin-sgd-0001
   # top_k: 10  # report the top-k accuracy
   # rgb_mean: '123.68,116.779,103.939'  # a tuple of size 3 for the mean rgb
+  # rgb_std: '1,1,1'  # a tuple of size 3 for the std rgb
   # center_crop: 1  # if or not center crop at image preprocessing
   # model_name: model
 
@@ -103,6 +116,7 @@ ensemble:
   ensemble_batch_size: 10
   # top_k: 10
   # rgb_mean: '123.68,116.779,103.939'  # a tuple of size 3 for the mean rgb
+  # rgb_std: '1,1,1'  # a tuple of size 3 for the std rgb
   classification_report_output: 1
   # classification_report_digits: 3
   confusion_matrix_output: 1

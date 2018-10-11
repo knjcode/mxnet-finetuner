@@ -17,6 +17,7 @@ LATEST_RESULT_LOG="logs/latest_result.txt"
 USE_LATEST=$(get_conf "$config"  ".export.use_latest" "1")
 TOP_K=$(get_conf "$config"  ".export.top_k" "10")
 RGB_MEAN=$(get_conf "$config" ".export.rgb_mean" "123.68,116.779,103.939")
+RGB_STD=$(get_conf "$config" ".export.rgb_std" "1,1,1")
 CENTER_CROP=$(get_conf "$config"  ".export.center_crop" "1")
 
 MODEL_NAME=$(get_conf "$config" ".export.model_name" "model")
@@ -79,7 +80,7 @@ CONFIG_LOG="logs/$MODEL-$(printf "%04d" $EPOCH)-export-config.yml"
 cp "$CONFIG_FILE" "$CONFIG_LOG" \
 && echo "Saved config file to \"$CONFIG_LOG\"" 1>&2
 
-generate_export_model_signature "$CUR_DIR" "$MODEL_IMAGE_SIZE" "$RGB_MEAN" "$NUM_CLASSES" "$export_tmp_dir"
+generate_export_model_signature "$CUR_DIR" "$MODEL_IMAGE_SIZE" "$RGB_MEAN" "$RGB_STD" "$NUM_CLASSES" "$export_tmp_dir"
 generate_export_model_service "$CUR_DIR" "$CENTER_CROP" "$TOP_K" "$service_tmp_dir"
 generate_export_model_conf "$CUR_DIR" "$MODEL_NAME" "$MODEL.model"
 
