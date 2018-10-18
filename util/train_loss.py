@@ -134,8 +134,8 @@ plt.plot(train_loss_x, train_loss_y, "r", label="train loss")
 plt.plot(val_loss_x, val_loss_y, "b", label="validation loss")
 
 plt_x = train_loss_x[0] + train_loss_x[-1] * 0.1
-plt_y = train_loss_y[0]
-plt_diff = train_loss_y[0] * 0.05
+plt_y = max(max(train_loss_y), max(val_loss_y))
+plt_diff = plt_y * 0.05
 plt.text(plt_x, plt_y - plt_diff * 1, '   model used:     %s' % model)
 plt.text(plt_x, plt_y - plt_diff * 2, '   optimizer:        %s' % optimizer)
 plt.text(plt_x, plt_y - plt_diff * 3, '   learning rate:   %s' % lr)
