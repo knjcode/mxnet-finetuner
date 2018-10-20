@@ -33,6 +33,8 @@ elif [[ "$TASK" = 'gen_test' ]]; then
   util/gen_test.sh "$CONFIG_FILE" "$IMAGE_SIZE"
 elif [[ "$TASK" = 'test' ]]; then
   util/test.sh
+elif [[ "$TASK" = 'extract_feature' ]]; then
+  util/extract_feature.sh
 elif [[ "$TASK" = 'export' ]]; then
   util/export_model.sh
 elif [[ "$TASK" = 'ensemble' ]]; then

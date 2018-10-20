@@ -8,6 +8,7 @@ Commands: (default is finetune)
   gen_train <image_size>:   Generate train and validation image recordIO files.
   gen_test <image_size>:    Generate test image recordIO files.
   test:                     test with specified model.
+  extract_feature:          extract features with specified model.
   ensemble <valid or test>: averaging ensemble test with validation or test dataset.
   export:                   Generate MXNet models for mxnet-model-server.
   num_layers <model_name>:  Print the number of layers before the last fullc layer.
