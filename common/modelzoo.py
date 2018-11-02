@@ -53,6 +53,8 @@ _default_model_info = {
                                 'params':_dummy_model_url+'imagenet1k-densenet-169-0000.params'},
     'imagenet1k-se-resnext-50': {'symbol':_dummy_model_url+'imagenet1k-se-resnext-50-symbol.json',
                                  'params':_dummy_model_url+'imagenet1k-se-resnext-50-0000.params'},
+    'imagenet1k-se-resnext-152': {'symbol':_dummy_model_url+'imagenet1k-se-resnext-152-symbol.json',
+                                  'params':_dummy_model_url+'imagenet1k-se-resnext-152-0000.params'},
     'imagenet1k-resnext-50': {'symbol':_base_model_url+'imagenet/resnext/50-layers/resnext-50-symbol.json',
                              'params':_base_model_url+'imagenet/resnext/50-layers/resnext-50-0000.params'},
     'imagenet1k-resnext-101': {'symbol':_base_model_url+'imagenet/resnext/101-layers/resnext-101-symbol.json',
